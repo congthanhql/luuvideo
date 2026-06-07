@@ -26,10 +26,8 @@
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; }
 
-/* ── APP SHELL ── */
 #app { display: flex; flex-direction: column; height: 100%; max-width: 480px; margin: 0 auto; position: relative; background: var(--bg); }
 
-/* ── TOP BAR ── */
 .topbar {
   flex-shrink: 0;
   height: calc(var(--top-h) + var(--safe-top));
@@ -46,13 +44,11 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 .icon-btn:active { background: var(--surface2); }
 .count-badge { font-size: 0.72rem; color: var(--muted); background: var(--surface); border: 1px solid var(--border); padding: 4px 10px; border-radius: 20px; }
 
-/* ── PAGES ── */
 .pages { flex: 1; overflow: hidden; position: relative; }
 .page { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; display: none; }
 .page.active { display: block; }
 .page-content { padding: 1rem 1rem calc(var(--nav-h) + var(--safe-bot) + 1rem); }
 
-/* ── BOTTOM NAV ── */
 .bottom-nav {
   flex-shrink: 0;
   height: calc(var(--nav-h) + var(--safe-bot));
@@ -77,7 +73,6 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 }
 .nav-add:active .nav-add-btn { transform: scale(0.92); box-shadow: 0 2px 8px rgba(255,45,92,0.25); }
 
-/* ── VIDEO GRID ── */
 .video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .video-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; cursor: pointer; position: relative; animation: fadeUp 0.25s ease both; }
 @keyframes fadeUp { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
@@ -93,19 +88,16 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 .card-act-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; background: rgba(0,0,0,0.55); backdrop-filter: blur(6px); border: none; border-radius: 7px; color: rgba(255,255,255,0.85); font-size: 0.62rem; padding: 5px 0; cursor: pointer; font-family: 'DM Sans', sans-serif; }
 .card-act-btn:active { background: rgba(255,45,92,0.6); }
 
-/* ── SEARCH BAR ── */
 .search-bar { position: relative; margin-bottom: 1rem; }
 .search-bar input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; padding: 10px 14px 10px 38px; outline: none; }
 .search-bar input:focus { border-color: rgba(255,45,92,0.4); }
 .search-bar svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
 
-/* ── FILTER PILLS ── */
 .filter-row { display: flex; gap: 7px; overflow-x: auto; scrollbar-width: none; margin-bottom: 1rem; padding-bottom: 2px; }
 .filter-row::-webkit-scrollbar { display: none; }
 .filter-pill { white-space: nowrap; padding: 6px 14px; border-radius: 20px; background: var(--surface); border: 1px solid var(--border); color: var(--muted); font-size: 0.78rem; cursor: pointer; flex-shrink: 0; }
 .filter-pill.active { background: rgba(255,45,92,0.15); border-color: rgba(255,45,92,0.5); color: var(--text); }
 
-/* ── EMPTY / LOADING ── */
 .empty-state { text-align: center; padding: 4rem 2rem; }
 .empty-icon { font-size: 2.5rem; opacity: 0.3; margin-bottom: 0.75rem; }
 .empty-state h3 { font-family: 'Syne', sans-serif; font-size: 1rem; color: var(--muted); margin-bottom: 4px; }
@@ -114,14 +106,13 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 .spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 8px; vertical-align: middle; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
-/* ── STATS PAGE ── */
 .stat-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.25rem; }
 .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1rem; }
 .stat-card .label { font-size: 0.72rem; color: var(--muted); margin-bottom: 6px; }
 .stat-card .value { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.8rem; }
 .stat-card.accent .value { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .recent-label { font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--muted); margin-bottom: 0.75rem; letter-spacing: 0.05em; }
-.recent-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.recent-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); cursor: pointer; }
 .recent-thumb { width: 44px; height: 58px; background: var(--surface2); border-radius: 8px; overflow: hidden; flex-shrink: 0; }
 .recent-thumb img { width: 100%; height: 100%; object-fit: cover; }
 .recent-info { flex: 1; min-width: 0; }
@@ -129,7 +120,6 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 .recent-meta { font-size: 0.72rem; color: var(--muted); }
 .recent-platform { display: inline-block; background: var(--surface2); border-radius: 5px; padding: 1px 6px; font-size: 0.65rem; }
 
-/* ── BOTTOM SHEET (ADD) ── */
 .sheet-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.6); display: none; }
 .sheet-overlay.open { display: block; }
 .sheet {
@@ -187,7 +177,6 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 .btn-save:active { opacity: 0.85; }
 .btn-save:disabled { opacity: 0.35; cursor: not-allowed; }
 
-/* ── VIDEO VIEWER SHEET ── */
 .viewer-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.95); display: none; align-items: flex-end; justify-content: center; }
 .viewer-overlay.open { display: flex; }
 .viewer-sheet {
@@ -213,11 +202,9 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 .viewer-btn.open { background: linear-gradient(135deg, rgba(255,45,92,0.2), rgba(124,58,237,0.2)); border: 1px solid rgba(255,45,92,0.35); color: var(--text); }
 .viewer-close { position: absolute; top: 12px; right: 12px; width: 34px; height: 34px; background: rgba(0,0,0,0.6); border: none; border-radius: 50%; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 5; }
 
-/* ── TOAST ── */
 .toast { position: fixed; bottom: calc(var(--nav-h) + var(--safe-bot) + 12px); left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(30,30,40,0.97); border: 1px solid var(--border); border-radius: 20px; padding: 9px 18px; font-size: 0.82rem; color: var(--text); z-index: 999; opacity: 0; transition: opacity 0.2s, transform 0.2s; white-space: nowrap; pointer-events: none; }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-/* ── TAB CONTENT ── */
 .tab-content { display: none; }
 .tab-content.active { display: block; }
 </style>
@@ -225,7 +212,6 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
 <body>
 <div id="app">
 
-  <!-- TOP BAR -->
   <div class="topbar">
     <div class="topbar-logo">▶ VideoVault</div>
     <div class="topbar-right">
@@ -236,10 +222,7 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
     </div>
   </div>
 
-  <!-- PAGES -->
   <div class="pages">
-
-    <!-- HOME PAGE -->
     <div class="page active" id="page-home">
       <div class="page-content">
         <div id="search-bar-wrap" style="display:none;">
@@ -266,7 +249,6 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
       </div>
     </div>
 
-    <!-- STATS PAGE -->
     <div class="page" id="page-stats">
       <div class="page-content">
         <div class="stat-cards">
@@ -291,10 +273,8 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
         <div id="recent-list"></div>
       </div>
     </div>
-
   </div>
 
-  <!-- BOTTOM NAV -->
   <div class="bottom-nav">
     <div class="nav-item active" id="nav-home" onclick="goPage('home')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -312,7 +292,7 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
   </div>
 </div>
 
-<!-- ADD BOTTOM SHEET -->
+<!-- ADD SHEET -->
 <div class="sheet-overlay" id="add-overlay" onclick="closeAddSheet()"></div>
 <div class="sheet" id="add-sheet">
   <div class="sheet-handle"></div>
@@ -325,8 +305,6 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
       <button class="tab-btn active" onclick="switchTab('upload',this)">📤 Upload file</button>
       <button class="tab-btn" onclick="switchTab('link',this)">🔗 Lưu link</button>
     </div>
-
-    <!-- UPLOAD -->
     <div class="tab-content active" id="tab-upload">
       <div class="drop-zone" id="drop-zone">
         <input type="file" id="file-input" accept="video/*" onchange="onFileSelected(this)" />
@@ -348,8 +326,6 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
         <textarea id="upload-note" placeholder="Mô tả..."></textarea>
       </div>
     </div>
-
-    <!-- LINK -->
     <div class="tab-content" id="tab-link">
       <div class="field">
         <label>Dán link — tự nhận dạng &amp; lưu</label>
@@ -371,7 +347,6 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
         <textarea id="link-note" placeholder="Mô tả, hashtag..."></textarea>
       </div>
     </div>
-
     <button class="btn-save" id="save-btn" onclick="saveVideo()">
       <span id="save-text">💾 Lưu</span>
     </button>
@@ -391,7 +366,7 @@ html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(-
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
           Copy link
         </button>
-        <button class="viewer-btn open" id="viewer-open-btn" onclick="openDirectLink()">
+        <button class="viewer-btn open" onclick="openDirectLink()">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           Mở link gốc
         </button>
@@ -430,237 +405,374 @@ let activeTab = 'upload';
 let selectedFile = null;
 let currentViewUrl = '';
 
-// ——— LOAD ———
+// ── LOAD ──
 onValue(videosRef, snap => {
   allVideos = [];
-  if (snap.exists()) snap.forEach(c => allVideos.push({ id: c.key, ...c.val() }));
-  allVideos.reverse();
+  if (snap.exists()) {
+    snap.forEach(c => allVideos.push({ id: c.key, ...c.val() }));
+  }
+  // Reverse để mới nhất lên trên (tạo array mới, không mutate)
+  allVideos = allVideos.reverse();
   document.getElementById('loading').style.display = 'none';
   renderVideos();
   updateStats();
 });
 
-// ——— RENDER ———
-window.renderVideos = function() {
+// ── RENDER ──
+// Dùng data attributes thay vì inline string interpolation để tránh lỗi XSS/HTML broken
+function renderVideos() {
   const grid = document.getElementById('video-grid');
-  let list = allVideos;
-  if (currentFilter === 'upload') list = list.filter(v => v.type === 'upload');
-  else if (currentFilter !== 'all') list = list.filter(v => (v.platform||'').toLowerCase().includes(currentFilter));
+  let list = [...allVideos];
+
+  if (currentFilter === 'upload') {
+    list = list.filter(v => v.type === 'upload');
+  } else if (currentFilter !== 'all') {
+    list = list.filter(v => (v.platform || '').toLowerCase().includes(currentFilter));
+  }
+
   if (searchQuery) {
     const q = searchQuery.toLowerCase();
-    list = list.filter(v => (v.title||'').toLowerCase().includes(q) || (v.url||'').toLowerCase().includes(q));
+    list = list.filter(v =>
+      (v.title || '').toLowerCase().includes(q) ||
+      (v.url || '').toLowerCase().includes(q)
+    );
   }
+
   const empty = document.getElementById('empty');
-  if (!list.length) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
+  if (!list.length) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
   empty.style.display = 'none';
-  grid.innerHTML = list.map((v,i) => buildCard(v,i)).join('');
+
+  // Xây DOM trực tiếp thay vì innerHTML string để tránh lỗi ký tự đặc biệt
+  grid.innerHTML = '';
+  list.forEach((v, i) => {
+    const card = buildCardElement(v, i);
+    grid.appendChild(card);
+  });
 }
+window.renderVideos = renderVideos;
 
-function buildCard(v, i) {
-  const title = esc(v.title || shortenUrl(v.url||''));
-  const platform = esc(v.platform || (v.type==='upload'?'Upload':'Video'));
-  const thumb = v.thumbnail || getYtThumb(v.url||'');
-  const url = esc(v.url||'');
-  const sid = esc(v.id);
-  const sp = esc(v.storagePath||'');
+function buildCardElement(v, i) {
+  const card = document.createElement('div');
+  card.className = 'video-card';
+  card.style.animationDelay = (i * 30) + 'ms';
+  card.dataset.id = v.id;
 
-  return `<div class="video-card" style="animation-delay:${i*30}ms" onclick="openVideo('${sid}')">
-    <div class="video-thumb">
-      ${thumb ? `<img src="${thumb}" loading="lazy" onerror="this.parentNode.innerHTML='<div class=thumb-placeholder>▶</div>'">` : `<div class="thumb-placeholder">▶</div>`}
-      <div class="thumb-overlay"></div>
-      <div class="card-platform">${platform}</div>
-      <div class="card-bottom">
-        <div class="card-title-overlay">${title}</div>
-        <div class="card-actions-row">
-          <button class="card-act-btn" onclick="event.stopPropagation();copyLink('${url}')">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
-            Copy
-          </button>
-          <button class="card-act-btn" onclick="event.stopPropagation();openLink('${url}')">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-            Mở
-          </button>
-          <button class="card-act-btn" style="flex:0.6;" onclick="event.stopPropagation();deleteVideo('${sid}','${sp}')">
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>`;
+  const thumb = v.thumbnail || getYtThumb(v.url || '');
+  const platform = v.platform || (v.type === 'upload' ? 'Upload' : 'Video');
+  const title = v.title || shortenUrl(v.url || '');
+
+  // Thumb
+  const thumbDiv = document.createElement('div');
+  thumbDiv.className = 'video-thumb';
+
+  if (thumb) {
+    const img = document.createElement('img');
+    img.src = thumb;
+    img.loading = 'lazy';
+    img.onerror = () => { thumbDiv.innerHTML = '<div class="thumb-placeholder">▶</div>'; };
+    thumbDiv.appendChild(img);
+  } else {
+    const ph = document.createElement('div');
+    ph.className = 'thumb-placeholder';
+    ph.textContent = '▶';
+    thumbDiv.appendChild(ph);
+  }
+
+  const overlay = document.createElement('div');
+  overlay.className = 'thumb-overlay';
+  thumbDiv.appendChild(overlay);
+
+  const platBadge = document.createElement('div');
+  platBadge.className = 'card-platform';
+  platBadge.textContent = platform;
+  thumbDiv.appendChild(platBadge);
+
+  // Bottom info
+  const bottom = document.createElement('div');
+  bottom.className = 'card-bottom';
+
+  const titleEl = document.createElement('div');
+  titleEl.className = 'card-title-overlay';
+  titleEl.textContent = title;
+  bottom.appendChild(titleEl);
+
+  const actRow = document.createElement('div');
+  actRow.className = 'card-actions-row';
+
+  // Copy btn
+  const copyBtn = document.createElement('button');
+  copyBtn.className = 'card-act-btn';
+  copyBtn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>Copy`;
+  copyBtn.addEventListener('click', e => { e.stopPropagation(); copyLink(v.url || ''); });
+  actRow.appendChild(copyBtn);
+
+  // Open btn
+  const openBtn = document.createElement('button');
+  openBtn.className = 'card-act-btn';
+  openBtn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>Mở`;
+  openBtn.addEventListener('click', e => { e.stopPropagation(); openLink(v.url || ''); });
+  actRow.appendChild(openBtn);
+
+  // Delete btn
+  const delBtn = document.createElement('button');
+  delBtn.className = 'card-act-btn';
+  delBtn.style.flex = '0.6';
+  delBtn.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>`;
+  delBtn.addEventListener('click', e => { e.stopPropagation(); deleteVideo(v.id, v.storagePath || ''); });
+  actRow.appendChild(delBtn);
+
+  bottom.appendChild(actRow);
+  thumbDiv.appendChild(bottom);
+  card.appendChild(thumbDiv);
+
+  // Card click → open viewer
+  card.addEventListener('click', () => openVideo(v.id));
+
+  return card;
 }
 
 function updateStats() {
   const total = allVideos.length;
-  const uploads = allVideos.filter(v => v.type==='upload').length;
-  const tt = allVideos.filter(v => (v.platform||'').toLowerCase().includes('tiktok')).length;
-  const yt = allVideos.filter(v => (v.platform||'').toLowerCase().includes('youtube')).length;
+  const uploads = allVideos.filter(v => v.type === 'upload').length;
+  const tt = allVideos.filter(v => (v.platform || '').toLowerCase().includes('tiktok')).length;
+  const yt = allVideos.filter(v => (v.platform || '').toLowerCase().includes('youtube')).length;
+
   document.getElementById('nav-count').textContent = total + ' video';
   document.getElementById('st-total').textContent = total;
   document.getElementById('st-upload').textContent = uploads;
   document.getElementById('st-tiktok').textContent = tt;
   document.getElementById('st-yt').textContent = yt;
-  // recent
+
   const rec = document.getElementById('recent-list');
-  rec.innerHTML = allVideos.slice(0,8).map(v => {
-    const thumb = v.thumbnail || getYtThumb(v.url||'');
+  rec.innerHTML = '';
+  allVideos.slice(0, 8).forEach(v => {
+    const thumb = v.thumbnail || getYtThumb(v.url || '');
     const date = v.createdAt ? new Date(v.createdAt).toLocaleDateString('vi-VN') : '';
-    return `<div class="recent-item" onclick="openVideo('${esc(v.id)}')">
-      <div class="recent-thumb">${thumb ? `<img src="${thumb}" style="width:100%;height:100%;object-fit:cover;">` : ''}</div>
-      <div class="recent-info">
-        <div class="recent-title">${esc(v.title||shortenUrl(v.url||''))}</div>
-        <div class="recent-meta"><span class="recent-platform">${esc(v.platform||'Video')}</span>  ${date}</div>
-      </div>
-    </div>`;
-  }).join('');
+
+    const item = document.createElement('div');
+    item.className = 'recent-item';
+    item.addEventListener('click', () => openVideo(v.id));
+
+    const thumbDiv = document.createElement('div');
+    thumbDiv.className = 'recent-thumb';
+    if (thumb) {
+      const img = document.createElement('img');
+      img.src = thumb;
+      img.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+      thumbDiv.appendChild(img);
+    }
+
+    const info = document.createElement('div');
+    info.className = 'recent-info';
+
+    const titleEl = document.createElement('div');
+    titleEl.className = 'recent-title';
+    titleEl.textContent = v.title || shortenUrl(v.url || '');
+
+    const meta = document.createElement('div');
+    meta.className = 'recent-meta';
+    const platSpan = document.createElement('span');
+    platSpan.className = 'recent-platform';
+    platSpan.textContent = v.platform || 'Video';
+    meta.appendChild(platSpan);
+    meta.append('  ' + date);
+
+    info.appendChild(titleEl);
+    info.appendChild(meta);
+    item.appendChild(thumbDiv);
+    item.appendChild(info);
+    rec.appendChild(item);
+  });
 }
 
-// ——— OPEN VIDEO ———
+// ── OPEN VIDEO ──
 window.openVideo = function(id) {
   const v = allVideos.find(x => x.id === id);
   if (!v) return;
   currentViewUrl = v.url || '';
   const embed = getEmbedUrl(currentViewUrl);
   const player = document.getElementById('viewer-player');
+
   if (embed) {
-    player.innerHTML = `<iframe src="${embed}" allowfullscreen allow="autoplay"></iframe>`;
+    const iframe = document.createElement('iframe');
+    iframe.src = embed;
+    iframe.allowFullscreen = true;
+    iframe.allow = 'autoplay';
+    iframe.style.cssText = 'width:100%;height:55vh;border:none;display:block;';
+    player.innerHTML = '';
+    player.appendChild(iframe);
   } else {
-    player.innerHTML = `<video src="${currentViewUrl}" controls autoplay playsinline style="width:100%;max-height:55vh;object-fit:contain;display:block;background:#000;"></video>`;
+    const video = document.createElement('video');
+    video.src = currentViewUrl;
+    video.controls = true;
+    video.autoplay = true;
+    video.setAttribute('playsinline', '');
+    video.style.cssText = 'width:100%;max-height:55vh;object-fit:contain;display:block;background:#000;';
+    player.innerHTML = '';
+    player.appendChild(video);
   }
+
   document.getElementById('viewer-title').textContent = v.title || shortenUrl(currentViewUrl);
   document.getElementById('viewer-note').textContent = v.note || '';
   document.getElementById('viewer-overlay').classList.add('open');
-}
+};
 
 window.closeViewer = function() {
   document.getElementById('viewer-player').innerHTML = '';
   document.getElementById('viewer-overlay').classList.remove('open');
-}
+};
 window.handleViewerClick = function(e) {
   if (e.target === document.getElementById('viewer-overlay')) closeViewer();
-}
-window.copyDirectLink = function() { copyLink(currentViewUrl); }
-window.openDirectLink = function() { openLink(currentViewUrl); }
+};
+window.copyDirectLink = function() { copyLink(currentViewUrl); };
+window.openDirectLink = function() { openLink(currentViewUrl); };
 
 window.copyLink = function(url) {
   if (!url) { toast('Không có link', 'error'); return; }
-  navigator.clipboard.writeText(url).then(() => toast('✅ Đã copy link!')).catch(() => {
-    const ta = document.createElement('textarea'); ta.value = url;
-    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-    toast('✅ Đã copy link!');
-  });
-}
-window.openLink = function(url) { if (url) window.open(url, '_blank'); }
+  navigator.clipboard.writeText(url)
+    .then(() => toast('✅ Đã copy link!'))
+    .catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = url;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      toast('✅ Đã copy link!');
+    });
+};
+window.openLink = function(url) { if (url) window.open(url, '_blank'); };
 
-// ——— SAVE ———
+// ── SAVE ──
 window.saveVideo = async function() {
   const btn = document.getElementById('save-btn');
   btn.disabled = true;
 
   if (activeTab === 'upload') {
     if (!selectedFile) { toast('Chọn file video trước', 'error'); btn.disabled = false; return; }
-    const title = document.getElementById('upload-title').value.trim() || selectedFile.name.replace(/\.[^.]+$/,'');
+    const title = document.getElementById('upload-title').value.trim() || selectedFile.name.replace(/\.[^.]+$/, '');
     const note = document.getElementById('upload-note').value.trim();
     const storagePath = `videos/${Date.now()}_${selectedFile.name}`;
     const task = uploadBytesResumable(stRef(storage, storagePath), selectedFile);
     document.getElementById('save-text').textContent = 'Đang upload...';
     document.getElementById('progress-wrap').classList.add('show');
+
     task.on('state_changed',
       s => {
-        const p = Math.round(s.bytesTransferred/s.totalBytes*100);
-        document.getElementById('progress-fill').style.width = p+'%';
-        document.getElementById('progress-txt').textContent = p+'%';
+        const p = Math.round(s.bytesTransferred / s.totalBytes * 100);
+        document.getElementById('progress-fill').style.width = p + '%';
+        document.getElementById('progress-txt').textContent = p + '%';
       },
-      err => { toast('❌ ' + err.message, 'error'); btn.disabled=false; document.getElementById('save-text').textContent='💾 Lưu'; },
+      err => {
+        toast('❌ ' + err.message, 'error');
+        btn.disabled = false;
+        document.getElementById('save-text').textContent = '💾 Lưu';
+      },
       async () => {
         const url = await getDownloadURL(task.snapshot.ref);
-        await push(videosRef, { type:'upload', title, note, platform:'Upload', url, storagePath, createdAt: Date.now() });
+        await push(videosRef, { type: 'upload', title, note, platform: 'Upload', url, storagePath, createdAt: Date.now() });
         toast('✅ Upload thành công!');
-        closeAddSheet(); resetForm(); btn.disabled=false; document.getElementById('save-text').textContent='💾 Lưu';
+        closeAddSheet(); resetForm();
+        btn.disabled = false;
+        document.getElementById('save-text').textContent = '💾 Lưu';
       }
     );
   } else {
     const url = document.getElementById('link-url').value.trim();
-    if (!url) { toast('Nhập link trước', 'error'); btn.disabled=false; return; }
-    try { new URL(url); } catch { toast('Link không hợp lệ', 'error'); btn.disabled=false; return; }
+    if (!url) { toast('Nhập link trước', 'error'); btn.disabled = false; return; }
+    try { new URL(url); } catch { toast('Link không hợp lệ', 'error'); btn.disabled = false; return; }
     const title = document.getElementById('link-title').value.trim() || shortenUrl(url);
     const note = document.getElementById('link-note').value.trim();
     const platform = detectPlatformName(url);
     document.getElementById('save-text').textContent = 'Đang lưu...';
     try {
-      await push(videosRef, { type:'link', title, note, platform, url, createdAt: Date.now() });
+      await push(videosRef, { type: 'link', title, note, platform, url, createdAt: Date.now() });
       toast('✅ Đã lưu link!');
       closeAddSheet(); resetForm();
-    } catch(e) { toast('❌ '+e.message, 'error'); }
-    btn.disabled=false; document.getElementById('save-text').textContent='💾 Lưu';
+    } catch (e) { toast('❌ ' + e.message, 'error'); }
+    btn.disabled = false;
+    document.getElementById('save-text').textContent = '💾 Lưu';
   }
-}
+};
 
-// ——— DELETE ———
-window.deleteVideo = async function(id, sp) {
+// ── DELETE ──
+async function deleteVideo(id, sp) {
   if (!confirm('Xóa video này?')) return;
   try {
-    await remove(dbRef(db, 'videos/'+id));
+    await remove(dbRef(db, 'videos/' + id));
     if (sp) try { await deleteObject(stRef(storage, sp)); } catch {}
     toast('🗑 Đã xóa');
-  } catch(e) { toast('Lỗi: '+e.message, 'error'); }
+  } catch (e) { toast('Lỗi: ' + e.message, 'error'); }
 }
 
-// ——— HELPERS ———
+// ── HELPERS ──
 function getEmbedUrl(url) {
   if (!url) return null;
-  if (url.includes('youtube.com/watch')) { try { const v=new URL(url).searchParams.get('v'); return v?`https://www.youtube.com/embed/${v}?autoplay=1`:null; } catch { return null; } }
-  if (url.includes('youtu.be/')) { const v=url.split('youtu.be/')[1]?.split('?')[0]; return v?`https://www.youtube.com/embed/${v}?autoplay=1`:null; }
+  if (url.includes('youtube.com/watch')) {
+    try { const v = new URL(url).searchParams.get('v'); return v ? `https://www.youtube.com/embed/${v}?autoplay=1` : null; } catch { return null; }
+  }
+  if (url.includes('youtu.be/')) {
+    const v = url.split('youtu.be/')[1]?.split('?')[0];
+    return v ? `https://www.youtube.com/embed/${v}?autoplay=1` : null;
+  }
   return null;
 }
 function getYtThumb(url) {
   if (!url) return null;
-  if (url.includes('youtube.com/watch')) { try { const v=new URL(url).searchParams.get('v'); return v?`https://img.youtube.com/vi/${v}/hqdefault.jpg`:null; } catch { return null; } }
-  if (url.includes('youtu.be/')) { const v=url.split('youtu.be/')[1]?.split('?')[0]; return v?`https://img.youtube.com/vi/${v}/hqdefault.jpg`:null; }
+  if (url.includes('youtube.com/watch')) {
+    try { const v = new URL(url).searchParams.get('v'); return v ? `https://img.youtube.com/vi/${v}/hqdefault.jpg` : null; } catch { return null; }
+  }
+  if (url.includes('youtu.be/')) {
+    const v = url.split('youtu.be/')[1]?.split('?')[0];
+    return v ? `https://img.youtube.com/vi/${v}/hqdefault.jpg` : null;
+  }
   return null;
 }
 function detectPlatformName(url) {
   if (!url) return 'Video';
   if (url.includes('tiktok.com')) return 'TikTok';
-  if (url.includes('youtube.com')||url.includes('youtu.be')) return 'YouTube';
-  if (url.includes('facebook.com')||url.includes('fb.com')) return 'Facebook';
+  if (url.includes('youtube.com') || url.includes('youtu.be')) return 'YouTube';
+  if (url.includes('facebook.com') || url.includes('fb.com')) return 'Facebook';
   if (url.includes('instagram.com')) return 'Instagram';
-  if (url.includes('twitter.com')||url.includes('x.com')) return 'Twitter/X';
+  if (url.includes('twitter.com') || url.includes('x.com')) return 'Twitter/X';
   return 'Video';
 }
 function shortenUrl(url) {
-  try { const u=new URL(url); return u.hostname.replace('www.','')+u.pathname.substring(0,20); } catch { return url.substring(0,35); }
-}
-function esc(s) {
-  if (!s) return '';
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+  try { const u = new URL(url); return u.hostname.replace('www.', '') + u.pathname.substring(0, 20); }
+  catch { return url.substring(0, 35); }
 }
 
-// ——— LINK INPUT ———
+// ── LINK INPUT ──
 let linkTimer = null;
 window.onLinkInput = function(url) {
   clearTimeout(linkTimer);
   const status = document.getElementById('link-status');
   const preview = document.getElementById('link-preview');
-  if (!url.trim()) { status.textContent=''; preview.style.display='none'; return; }
-  status.textContent='⏳';
+  if (!url.trim()) { status.textContent = ''; preview.style.display = 'none'; return; }
+  status.textContent = '⏳';
   linkTimer = setTimeout(() => {
-    try { new URL(url); status.textContent='✅'; } catch { status.textContent='❌'; return; }
+    try { new URL(url); status.textContent = '✅'; }
+    catch { status.textContent = '❌'; return; }
     document.getElementById('link-plat-label').textContent = detectPlatformName(url);
     document.getElementById('link-url-label').textContent = shortenUrl(url);
     preview.style.display = 'block';
   }, 350);
-}
+};
 
-// ——— FILE SELECT ———
+// ── FILE SELECT ──
 window.onFileSelected = function(input) {
   const file = input.files[0];
   if (!file) return;
-  if (file.size > 500*1024*1024) { toast('File quá lớn (tối đa 500MB)', 'error'); return; }
+  if (file.size > 500 * 1024 * 1024) { toast('File quá lớn (tối đa 500MB)', 'error'); return; }
   selectedFile = file;
-  document.getElementById('file-name').textContent = '✅ '+file.name+' ('+( file.size/1024/1024).toFixed(1)+' MB)';
+  document.getElementById('file-name').textContent = '✅ ' + file.name + ' (' + (file.size / 1024 / 1024).toFixed(1) + ' MB)';
   if (!document.getElementById('upload-title').value)
-    document.getElementById('upload-title').value = file.name.replace(/\.[^.]+$/,'');
-}
+    document.getElementById('upload-title').value = file.name.replace(/\.[^.]+$/, '');
+};
 
 const dz = document.getElementById('drop-zone');
 dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
@@ -675,43 +787,41 @@ dz.addEventListener('drop', e => {
   }
 });
 
-// ——— TABS ———
+// ── TABS / NAV ──
 window.switchTab = function(tab, el) {
   activeTab = tab;
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('tab-upload').classList.toggle('active', tab==='upload');
-  document.getElementById('tab-link').classList.toggle('active', tab==='link');
-}
-
-// ——— SHEET / NAV ———
+  document.getElementById('tab-upload').classList.toggle('active', tab === 'upload');
+  document.getElementById('tab-link').classList.toggle('active', tab === 'link');
+};
 window.openAddSheet = function() {
   document.getElementById('add-overlay').classList.add('open');
   setTimeout(() => document.getElementById('add-sheet').classList.add('open'), 10);
-}
+};
 window.closeAddSheet = function() {
   document.getElementById('add-sheet').classList.remove('open');
   document.getElementById('add-overlay').classList.remove('open');
-}
+};
 window.goPage = function(page) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('page-'+page).classList.add('active');
-  document.getElementById('nav-'+page)?.classList.add('active');
-}
+  document.getElementById('page-' + page).classList.add('active');
+  document.getElementById('nav-' + page)?.classList.add('active');
+};
 window.openSearch = function() {
   const w = document.getElementById('search-bar-wrap');
   const isOpen = w.style.display !== 'none';
   w.style.display = isOpen ? 'none' : 'block';
   if (!isOpen) document.getElementById('search-input').focus();
-}
-window.searchVideos = function(q) { searchQuery = q; renderVideos(); }
+};
+window.searchVideos = function(q) { searchQuery = q; renderVideos(); };
 window.setFilter = function(f, el) {
   currentFilter = f;
   document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
   el.classList.add('active');
   renderVideos();
-}
+};
 
 function resetForm() {
   selectedFile = null;
@@ -728,7 +838,7 @@ function resetForm() {
   document.getElementById('progress-fill').style.width = '0%';
 }
 
-function toast(msg, type='') {
+function toast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg; t.className = 'toast show';
   setTimeout(() => t.className = 'toast', 2800);
