@@ -1,150 +1,247 @@
+
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pk:#FFE4F0;--pk2:#F9C5D9;--pk3:#D4537E;
+  --lv:#EAF4FF;--lv2:#C2DFFB;--lv3:#378ADD;
+  --mn:#FFF0E6;--mn2:#FFD4B2;--mn3:#D85A30;
+  --gr:#EDFAF3;--gr2:#BBEDCE;--gr3:#1D9E75;
+  --yl:#FEFBE6;--yl2:#FAEAB2;--yl3:#BA7517;
+  --bg:#FFF7FB;--card:#FFFFFF;--border:#F2D6E8;
+  --txt:#3A2040;--txt2:#7A5A80;--txt3:#B090B8;
+}
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--txt);min-height:100vh}
+h2.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+.wrap{max-width:700px;margin:0 auto;padding:1.5rem 1rem 3rem;position:relative}
+.header{text-align:center;margin-bottom:1.5rem}
+.logo{display:inline-flex;align-items:center;gap:8px;margin-bottom:.4rem}
+.logo-icon{width:36px;height:36px;border-radius:12px;background:#F9C5D9;display:flex;align-items:center;justify-content:center;font-size:17px}
+.header h1{font-size:21px;font-weight:700;color:var(--txt)}
+.header p{font-size:13px;color:var(--txt2);margin-top:3px}
+.fb-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;margin-top:6px}
+.fb-badge.ok{background:#EDFAF3;color:#1D9E75}.fb-badge.err{background:#FCEBEB;color:#A32D2D}.fb-badge.loading{background:#EAF4FF;color:#185FA5}
+
+.add-box{background:var(--card);border:1.5px solid var(--border);border-radius:20px;padding:1.2rem;margin-bottom:1.25rem}
+.inp{width:100%;border:1.5px solid var(--border);border-radius:12px;padding:9px 13px;font-size:14px;font-family:'Nunito',sans-serif;background:#FFF7FB;color:var(--txt);outline:none;transition:border-color .2s;margin-bottom:.7rem}
+.inp:focus{border-color:var(--pk3)}.inp::placeholder{color:var(--txt3)}
+.meta-row{display:flex;gap:8px;margin-bottom:.7rem}
+.meta-row .inp{margin-bottom:0;flex:1}
+.cat-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:.65rem}
+.cat-pill{padding:5px 11px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid transparent;transition:all .15s;user-select:none}
+.cat-pill.yt{background:var(--pk);color:var(--pk3);border-color:var(--pk2)}.cat-pill.yt.sel{background:var(--pk3);color:#fff;border-color:var(--pk3)}
+.cat-pill.tu{background:var(--lv);color:var(--lv3);border-color:var(--lv2)}.cat-pill.tu.sel{background:var(--lv3);color:#fff;border-color:var(--lv3)}
+.cat-pill.mv{background:var(--mn);color:var(--mn3);border-color:var(--mn2)}.cat-pill.mv.sel{background:var(--mn3);color:#fff;border-color:var(--mn3)}
+.cat-pill.mu{background:var(--gr);color:var(--gr3);border-color:var(--gr2)}.cat-pill.mu.sel{background:var(--gr3);color:#fff;border-color:var(--gr3)}
+.cat-pill.ot{background:var(--yl);color:var(--yl3);border-color:var(--yl2)}.cat-pill.ot.sel{background:var(--yl3);color:#fff;border-color:var(--yl3)}
+.btn-add{display:block;width:100%;padding:10px;border-radius:12px;background:var(--pk3);color:#fff;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;border:none;cursor:pointer;transition:opacity .2s}
+.btn-add:hover{opacity:.85}.btn-add:disabled{opacity:.5;cursor:not-allowed}
+
+.toolbar{display:flex;align-items:center;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
+.search-box{flex:1;min-width:140px;display:flex;align-items:center;gap:6px;background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:7px 12px}
+.search-box svg{flex-shrink:0;opacity:.5}
+.search-box input{border:none;background:transparent;outline:none;font-size:13px;font-family:'Nunito',sans-serif;color:var(--txt);width:100%}
+.search-box input::placeholder{color:var(--txt3)}
+.fb2{padding:6px 11px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;border:1.5px solid var(--border);background:var(--card);color:var(--txt2);font-family:'Nunito',sans-serif;transition:all .15s}
+.fb2.active{background:var(--txt);color:#fff;border-color:var(--txt)}
+
+.stats-row{display:flex;gap:8px;margin-bottom:1.1rem}
+.stat-c{flex:1;background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:.65rem .9rem;text-align:center}
+.stat-c .num{font-size:20px;font-weight:700;color:var(--txt)}.stat-c .lbl{font-size:11px;color:var(--txt2);margin-top:2px}
+
+.cards{display:grid;gap:10px}
+.vcard{background:var(--card);border:1.5px solid var(--border);border-radius:16px;padding:.9rem 1rem;display:flex;gap:10px;align-items:flex-start}
+.card-stripe{width:4px;border-radius:4px;flex-shrink:0;align-self:stretch}
+.card-icon{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:15px}
+.card-body{flex:1;min-width:0}
+.card-title{font-size:14px;font-weight:700;color:var(--txt);line-height:1.3;word-break:break-word}
+.card-url{font-size:12px;color:var(--txt3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card-note{font-size:12px;color:var(--txt2);margin-top:4px;font-style:italic}
+.card-foot{display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap}
+.tag{padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600}
+.card-date{font-size:11px;color:var(--txt3);margin-left:auto}
+.card-actions{display:flex;gap:5px;flex-direction:column;align-items:flex-end;flex-shrink:0}
+.act-btn{width:30px;height:30px;border-radius:9px;border:1.5px solid var(--border);background:var(--card);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--txt2);transition:all .15s}
+.act-btn:hover{background:var(--pk);border-color:var(--pk2);color:var(--pk3)}
+.act-btn.del:hover{background:#FFECEC;border-color:#F09595;color:#A32D2D}
+.act-btn.fav-on{color:#D85A30;border-color:#FFD4B2;background:var(--mn)}
+.empty{text-align:center;padding:2.5rem 1rem;color:var(--txt3);font-size:14px}
+.toast{position:absolute;top:10px;right:10px;padding:7px 13px;border-radius:10px;font-size:12px;font-weight:600;pointer-events:none;opacity:0;transition:opacity .3s}
+.toast.ok{background:#EDFAF3;color:#1D9E75;border:1px solid #BBEDCE}
+.toast.err{background:#FCEBEB;color:#A32D2D;border:1px solid #F09595}
+</style>
+
+<h2 class="sr-only">Ứng dụng lưu link video với Firebase Realtime Database</h2>
+<div class="wrap">
+  <div id="toast" class="toast"></div>
+  <div class="header">
+    <div class="logo"><div class="logo-icon">🎬</div><h1>VideoBox</h1></div>
+    <p>Lưu & quản lý link video — đồng bộ Firebase</p>
+    <div id="fb-status" class="fb-badge loading">⏳ Đang kết nối...</div>
+  </div>
+
+  <div class="add-box">
+    <input id="inp-url" class="inp" type="text" placeholder="🔗 Dán link video vào đây...">
+    <div class="meta-row">
+      <input id="inp-title" class="inp" type="text" placeholder="✏️ Tiêu đề video">
+      <input id="inp-note" class="inp" type="text" placeholder="📝 Ghi chú ngắn">
+    </div>
+    <div class="cat-pills">
+      <span class="cat-pill yt sel" data-cat="youtube">▶ YouTube</span>
+      <span class="cat-pill tu" data-cat="tutorial">📚 Tutorial</span>
+      <span class="cat-pill mv" data-cat="phim">🎬 Phim</span>
+      <span class="cat-pill mu" data-cat="music">🎵 Music</span>
+      <span class="cat-pill ot" data-cat="khác">✨ Khác</span>
+    </div>
+    <button class="btn-add" id="btn-add">+ Thêm video</button>
+  </div>
+
+  <div class="stats-row">
+    <div class="stat-c"><div class="num" id="s-total">—</div><div class="lbl">Tổng link</div></div>
+    <div class="stat-c"><div class="num" id="s-fav">—</div><div class="lbl">Yêu thích ❤️</div></div>
+    <div class="stat-c"><div class="num" id="s-cat">—</div><div class="lbl">Danh mục</div></div>
+  </div>
+
+  <div class="toolbar">
+    <div class="search-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input id="inp-search" type="text" placeholder="Tìm video..." oninput="renderCards()">
+    </div>
+    <button class="fb2 active" id="f-all" onclick="setFilter('all')">Tất cả</button>
+    <button class="fb2" id="f-fav" onclick="setFilter('fav')">❤️ Yêu thích</button>
+  </div>
+
+  <div class="cards" id="cards-wrap"><div class="empty">⏳ Đang tải dữ liệu...</div></div>
+</div>
+
 <script type="module">
+import{initializeApp}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js';
+import{getDatabase,ref,push,remove,update,onValue}from'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
-import {
-getDatabase,
-ref,
-push,
-onValue,
-remove
-} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+const app=initializeApp({apiKey:"AIzaSyCbW8R2HapkKQWgiIB8VqxI2o2TRrKwJK8",authDomain:"rule-f6b84.firebaseapp.com",databaseURL:"https://rule-f6b84-default-rtdb.firebaseio.com",projectId:"rule-f6b84",storageBucket:"rule-f6b84.firebasestorage.app",messagingSenderId:"914382101341",appId:"1:914382101341:web:2dcc836a28df58aec266b4"});
+const db=getDatabase(app);
+const vRef=ref(db,'videos');
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCbW8R2HapkKQWgiIB8VqxI2o2TRrKwJK8",
-  authDomain: "rule-f6b84.firebaseapp.com",
-  databaseURL: "https://rule-f6b84-default-rtdb.firebaseio.com",
-  projectId: "rule-f6b84",
-  storageBucket: "rule-f6b84.firebasestorage.app",
-  messagingSenderId: "914382101341",
-  appId: "1:914382101341:web:2dcc836a28df58aec266b4",
-  measurementId: "G-C9H49N0F96"
+const CATS={
+  youtube:{bg:'#FFE4F0',clr:'#D4537E',stripe:'#F9C5D9',em:'▶'},
+  tutorial:{bg:'#EAF4FF',clr:'#378ADD',stripe:'#C2DFFB',em:'📚'},
+  phim:{bg:'#FFF0E6',clr:'#D85A30',stripe:'#FFD4B2',em:'🎬'},
+  music:{bg:'#EDFAF3',clr:'#1D9E75',stripe:'#BBEDCE',em:'🎵'},
+  khác:{bg:'#FEFBE6',clr:'#BA7517',stripe:'#FAEAB2',em:'✨'}
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+let allVideos={};
+let curFilter='all';
+let selCat='youtube';
 
-window.addVideo = function(){
-
-const title =
-document.getElementById("title").value.trim();
-
-const url =
-document.getElementById("url").value.trim();
-
-if(!title || !url){
-alert("Vui lòng nhập đầy đủ!");
-return;
-}
-
-push(ref(db,"videos"),{
-title:title,
-url:url,
-createdAt:Date.now()
+document.querySelectorAll('.cat-pill').forEach(p=>{
+  p.onclick=()=>{
+    selCat=p.dataset.cat;
+    document.querySelectorAll('.cat-pill').forEach(x=>x.classList.remove('sel'));
+    p.classList.add('sel');
+  };
 });
 
-document.getElementById("title").value="";
-document.getElementById("url").value="";
+function toast(msg,type='ok'){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast '+type;t.style.opacity='1';
+  setTimeout(()=>t.style.opacity='0',2500);
 }
 
-window.deleteVideo = function(id){
+function domain(url){try{return new URL(url).hostname.replace('www.','')}catch{return url.slice(0,28)}}
+function fmtDate(ts){return ts?new Date(ts).toLocaleDateString('vi-VN',{day:'2-digit',month:'2-digit',year:'2-digit'}):''}
 
-if(confirm("Xóa video này?")){
-remove(ref(db,"videos/"+id));
-}
-
-}
-
-function loadVideos(){
-
-onValue(ref(db,"videos"),(snapshot)=>{
-
-const data = snapshot.val() || {};
-
-const videos = Object.entries(data)
-.map(([id,value])=>({
-id,
-...value
-}))
-.sort((a,b)=>b.createdAt-a.createdAt);
-
-renderVideos(videos);
-
+onValue(vRef,snap=>{
+  allVideos=snap.val()||{};
+  const st=document.getElementById('fb-status');
+  st.className='fb-badge ok';st.textContent='✅ Firebase đã kết nối';
+  renderCards();
+},err=>{
+  const st=document.getElementById('fb-status');
+  st.className='fb-badge err';st.textContent='❌ Lỗi kết nối';
+  document.getElementById('cards-wrap').innerHTML='<div class="empty">Không thể kết nối Firebase</div>';
 });
 
-}
-
-window.renderVideos = function(videos=[]){
-
-const search =
-document.getElementById("search")
-.value.toLowerCase();
-
-const container =
-document.getElementById("videoList");
-
-const filtered =
-videos.filter(v=>
-v.title.toLowerCase().includes(search)
-);
-
-if(filtered.length===0){
-
-container.innerHTML=`
-<div class="empty">
-<h3>📭 Chưa có video nào</h3>
-</div>
-`;
-
-return;
-}
-
-container.innerHTML =
-filtered.map(v=>`
-
-<div class="card">
-
-<div class="preview">
-🎥
-</div>
-
-<div class="info">
-
-<div class="title">
-${v.title}
-</div>
-
-<div class="link">
-${v.url}
-</div>
-
-<div class="actions">
-
-<button
-class="open"
-onclick="window.open('${v.url}','_blank')">
-▶ Xem
-</button>
-
-<button
-class="delete"
-onclick="deleteVideo('${v.id}')">
-🗑
-</button>
-
-</div>
-
-</div>
-
-</div>
-
-`).join("");
-
+window.setFilter=function(f){
+  curFilter=f;
+  document.getElementById('f-all').className='fb2'+(f==='all'?' active':'');
+  document.getElementById('f-fav').className='fb2'+(f==='fav'?' active':'');
+  renderCards();
 };
 
-document
-.getElementById("search")
-.addEventListener("keyup",()=>loadVideos());
+document.getElementById('btn-add').onclick=async()=>{
+  const url=document.getElementById('inp-url').value.trim();
+  if(!url){toast('Vui lòng nhập link!','err');return;}
+  const title=document.getElementById('inp-title').value.trim()||domain(url);
+  const note=document.getElementById('inp-note').value.trim();
+  const btn=document.getElementById('btn-add');
+  btn.disabled=true;btn.textContent='Đang lưu...';
+  try{
+    await push(vRef,{url,title,note:note||'',cat:selCat,fav:false,date:Date.now()});
+    document.getElementById('inp-url').value='';
+    document.getElementById('inp-title').value='';
+    document.getElementById('inp-note').value='';
+    toast('Đã lưu lên Firebase! 🎉','ok');
+  }catch(e){toast('Lỗi: '+e.message,'err');}
+  btn.disabled=false;btn.textContent='+ Thêm video';
+};
 
-loadVideos();
+window.toggleFav=async(id)=>{
+  const v=allVideos[id];if(!v)return;
+  await update(ref(db,'videos/'+id),{fav:!v.fav});
+};
+window.delVideo=async(id)=>{
+  if(!confirm('Xóa video này?'))return;
+  await remove(ref(db,'videos/'+id));
+  toast('Đã xóa!','ok');
+};
+window.openVideo=(url)=>window.open(url,'_blank');
 
+function renderCards(){
+  const q=(document.getElementById('inp-search').value||'').toLowerCase();
+  const entries=Object.entries(allVideos);
+  const cats=new Set(entries.map(([,v])=>v.cat||'khác'));
+  document.getElementById('s-total').textContent=entries.length;
+  document.getElementById('s-fav').textContent=entries.filter(([,v])=>v.fav).length;
+  document.getElementById('s-cat').textContent=cats.size;
+
+  let list=entries.filter(([,v])=>{
+    if(curFilter==='fav'&&!v.fav)return false;
+    if(q&&!(v.title+v.url+(v.note||'')).toLowerCase().includes(q))return false;
+    return true;
+  }).sort((a,b)=>(b[1].date||0)-(a[1].date||0));
+
+  const wrap=document.getElementById('cards-wrap');
+  if(!list.length){wrap.innerHTML='<div class="empty">Chưa có video nào 🌸</div>';return;}
+
+  wrap.innerHTML=list.map(([id,v])=>{
+    const cat=v.cat&&CATS[v.cat]?v.cat:'khác';
+    const c=CATS[cat];
+    return`<div class="vcard">
+      <div class="card-stripe" style="background:${c.stripe}"></div>
+      <div class="card-icon" style="background:${c.bg}">${c.em}</div>
+      <div class="card-body">
+        <div class="card-title">${v.title||domain(v.url)}</div>
+        <div class="card-url">${domain(v.url)}</div>
+        ${v.note?`<div class="card-note">${v.note}</div>`:''}
+        <div class="card-foot">
+          <span class="tag" style="background:${c.bg};color:${c.clr}">${cat}</span>
+          <span class="card-date">${fmtDate(v.date)}</span>
+        </div>
+      </div>
+      <div class="card-actions">
+        <button class="act-btn" onclick="openVideo('${v.url}')" title="Mở link">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        </button>
+        <button class="act-btn ${v.fav?'fav-on':''}" onclick="toggleFav('${id}')" title="${v.fav?'Bỏ yêu thích':'Yêu thích'}">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="${v.fav?'#D85A30':'none'}" stroke="${v.fav?'#D85A30':'currentColor'}" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </button>
+        <button class="act-btn del" onclick="delVideo('${id}')" title="Xóa">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
 </script>
