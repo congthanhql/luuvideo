@@ -2,285 +2,400 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a0a0f">
 <title>VideoVault</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0a0a0f;
-    --surface: #13131a;
-    --surface2: #1c1c26;
-    --accent: #ff2d5c;
-    --accent2: #7c3aed;
-    --text: #f0f0f8;
-    --muted: #888899;
-    --border: rgba(255,255,255,0.08);
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; overflow-x: hidden; }
+:root {
+  --bg: #0a0a0f;
+  --surface: #13131a;
+  --surface2: #1e1e28;
+  --accent: #ff2d5c;
+  --accent2: #7c3aed;
+  --text: #f0f0f8;
+  --muted: #666677;
+  --border: rgba(255,255,255,0.07);
+  --nav-h: 64px;
+  --top-h: 56px;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bot: env(safe-area-inset-bottom, 0px);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow: hidden; background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; }
 
-  nav {
-    position: sticky; top: 0; z-index: 100;
-    background: rgba(10,10,15,0.88); backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0 2rem; height: 60px;
-  }
-  .logo {
-    font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.4rem;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-  }
-  .nav-right { display: flex; align-items: center; gap: 0.75rem; }
-  .nav-count { font-size: 0.8rem; color: var(--muted); background: var(--surface); padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); }
-  .add-btn {
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: #fff; border: none; padding: 8px 18px; border-radius: 20px;
-    font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 0.875rem;
-    cursor: pointer; display: flex; align-items: center; gap: 6px; transition: opacity 0.2s;
-  }
-  .add-btn:hover { opacity: 0.88; }
+/* ── APP SHELL ── */
+#app { display: flex; flex-direction: column; height: 100%; max-width: 480px; margin: 0 auto; position: relative; background: var(--bg); }
 
-  .stats-bar { display: flex; gap: 1.5rem; padding: 0.75rem 2rem; border-bottom: 1px solid var(--border); font-size: 0.8rem; color: var(--muted); }
-  .stat-item strong { color: var(--text); font-family: 'Syne', sans-serif; font-weight: 700; }
+/* ── TOP BAR ── */
+.topbar {
+  flex-shrink: 0;
+  height: calc(var(--top-h) + var(--safe-top));
+  padding-top: var(--safe-top);
+  display: flex; align-items: center; justify-content: space-between;
+  padding-left: 1.1rem; padding-right: 1.1rem;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  position: relative; z-index: 10;
+}
+.topbar-logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.25rem; background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+.icon-btn { width: 38px; height: 38px; border-radius: 12px; background: var(--surface); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text); transition: background 0.15s; }
+.icon-btn:active { background: var(--surface2); }
+.count-badge { font-size: 0.72rem; color: var(--muted); background: var(--surface); border: 1px solid var(--border); padding: 4px 10px; border-radius: 20px; }
 
-  .filters { display: flex; align-items: center; gap: 0.75rem; padding: 1rem 2rem; overflow-x: auto; scrollbar-width: none; border-bottom: 1px solid var(--border); }
-  .filters::-webkit-scrollbar { display: none; }
-  .filter-chip { white-space: nowrap; padding: 6px 16px; border-radius: 20px; background: var(--surface); border: 1px solid var(--border); color: var(--muted); font-size: 0.82rem; cursor: pointer; transition: all 0.2s; }
-  .filter-chip:hover { border-color: rgba(255,45,92,0.4); color: var(--text); }
-  .filter-chip.active { background: linear-gradient(135deg, rgba(255,45,92,0.2), rgba(124,58,237,0.2)); border-color: var(--accent); color: var(--text); }
-  .search-wrap { margin-left: auto; position: relative; flex-shrink: 0; }
-  .search-wrap input { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; padding: 7px 14px 7px 34px; outline: none; width: 200px; transition: border-color 0.2s, width 0.3s; }
-  .search-wrap input:focus { border-color: var(--accent); width: 240px; }
-  .search-icon { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+/* ── PAGES ── */
+.pages { flex: 1; overflow: hidden; position: relative; }
+.page { position: absolute; inset: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; display: none; }
+.page.active { display: block; }
+.page-content { padding: 1rem 1rem calc(var(--nav-h) + var(--safe-bot) + 1rem); }
 
-  main { padding: 1.5rem 2rem 4rem; }
+/* ── BOTTOM NAV ── */
+.bottom-nav {
+  flex-shrink: 0;
+  height: calc(var(--nav-h) + var(--safe-bot));
+  padding-bottom: var(--safe-bot);
+  display: flex; align-items: stretch;
+  background: rgba(10,10,15,0.97);
+  border-top: 1px solid var(--border);
+  backdrop-filter: blur(20px);
+  position: relative; z-index: 10;
+}
+.nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; color: var(--muted); transition: color 0.2s; padding-top: 8px; }
+.nav-item.active { color: var(--accent); }
+.nav-item svg { width: 22px; height: 22px; }
+.nav-item span { font-size: 0.62rem; font-weight: 500; letter-spacing: 0.03em; }
+.nav-add { flex: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; padding-top: 8px; }
+.nav-add-btn {
+  width: 46px; height: 46px; border-radius: 16px;
+  background: linear-gradient(135deg, var(--accent), var(--accent2));
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(255,45,92,0.35);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.nav-add:active .nav-add-btn { transform: scale(0.92); box-shadow: 0 2px 8px rgba(255,45,92,0.25); }
 
-  .loading-state { text-align: center; padding: 3rem; color: var(--muted); font-size: 0.9rem; }
-  .spinner { display: inline-block; width: 20px; height: 20px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 8px; vertical-align: middle; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+/* ── VIDEO GRID ── */
+.video-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.video-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; cursor: pointer; position: relative; animation: fadeUp 0.25s ease both; }
+@keyframes fadeUp { from { opacity:0; transform: translateY(10px); } to { opacity:1; transform: translateY(0); } }
+.video-card:active { transform: scale(0.97); }
+.video-thumb { position: relative; width: 100%; aspect-ratio: 9/16; background: var(--surface2); overflow: hidden; }
+.video-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thumb-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.1); font-size: 2rem; }
+.thumb-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 55%); }
+.card-platform { position: absolute; top: 8px; left: 8px; background: rgba(0,0,0,0.65); backdrop-filter: blur(4px); border-radius: 6px; padding: 2px 7px; font-size: 0.62rem; font-weight: 600; color: #fff; }
+.card-bottom { position: absolute; bottom: 0; left: 0; right: 0; padding: 8px; }
+.card-title-overlay { font-family: 'Syne', sans-serif; font-size: 0.78rem; font-weight: 700; color: #fff; line-height: 1.2; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-shadow: 0 1px 4px rgba(0,0,0,0.8); }
+.card-actions-row { display: flex; gap: 5px; margin-top: 6px; }
+.card-act-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 4px; background: rgba(0,0,0,0.55); backdrop-filter: blur(6px); border: none; border-radius: 7px; color: rgba(255,255,255,0.85); font-size: 0.62rem; padding: 5px 0; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+.card-act-btn:active { background: rgba(255,45,92,0.6); }
 
-  .empty-state { text-align: center; padding: 5rem 2rem; display: none; }
-  .empty-state.show { display: block; }
-  .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.3; }
-  .empty-state h3 { font-family: 'Syne', sans-serif; font-size: 1.2rem; color: var(--muted); margin-bottom: 0.5rem; }
-  .empty-state p { color: var(--muted); font-size: 0.9rem; opacity: 0.6; }
+/* ── SEARCH BAR ── */
+.search-bar { position: relative; margin-bottom: 1rem; }
+.search-bar input { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; padding: 10px 14px 10px 38px; outline: none; }
+.search-bar input:focus { border-color: rgba(255,45,92,0.4); }
+.search-bar svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
 
-  .video-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; }
+/* ── FILTER PILLS ── */
+.filter-row { display: flex; gap: 7px; overflow-x: auto; scrollbar-width: none; margin-bottom: 1rem; padding-bottom: 2px; }
+.filter-row::-webkit-scrollbar { display: none; }
+.filter-pill { white-space: nowrap; padding: 6px 14px; border-radius: 20px; background: var(--surface); border: 1px solid var(--border); color: var(--muted); font-size: 0.78rem; cursor: pointer; flex-shrink: 0; }
+.filter-pill.active { background: rgba(255,45,92,0.15); border-color: rgba(255,45,92,0.5); color: var(--text); }
 
-  .video-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; cursor: pointer; transition: transform 0.2s, border-color 0.2s; position: relative; animation: fadeUp 0.3s ease both; }
-  @keyframes fadeUp { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: translateY(0); } }
-  .video-card:hover { transform: translateY(-3px); border-color: rgba(255,45,92,0.35); }
+/* ── EMPTY / LOADING ── */
+.empty-state { text-align: center; padding: 4rem 2rem; }
+.empty-icon { font-size: 2.5rem; opacity: 0.3; margin-bottom: 0.75rem; }
+.empty-state h3 { font-family: 'Syne', sans-serif; font-size: 1rem; color: var(--muted); margin-bottom: 4px; }
+.empty-state p { font-size: 0.82rem; color: var(--muted); opacity: 0.6; }
+.loading-wrap { text-align: center; padding: 3rem; color: var(--muted); font-size: 0.85rem; }
+.spinner { display: inline-block; width: 18px; height: 18px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin-right: 8px; vertical-align: middle; }
+@keyframes spin { to { transform: rotate(360deg); } }
 
-  .video-thumb { position: relative; width: 100%; aspect-ratio: 9/16; background: var(--surface2); overflow: hidden; }
-  .video-thumb img, .video-thumb video { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .thumb-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 50%); pointer-events: none; }
-  .play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 48px; height: 48px; background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 18px; pointer-events: none; opacity: 0; transition: opacity 0.2s; }
-  .video-card:hover .play-btn { opacity: 1; }
-  .video-platform { position: absolute; top: 10px; left: 10px; background: rgba(0,0,0,0.65); backdrop-filter: blur(6px); border-radius: 8px; padding: 3px 8px; font-size: 0.68rem; font-weight: 600; color: #fff; pointer-events: none; }
-  .video-type-badge { position: absolute; bottom: 10px; left: 10px; background: rgba(124,58,237,0.8); border-radius: 6px; padding: 2px 7px; font-size: 0.65rem; font-weight: 600; color: #fff; pointer-events: none; }
+/* ── STATS PAGE ── */
+.stat-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 1.25rem; }
+.stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 1rem; }
+.stat-card .label { font-size: 0.72rem; color: var(--muted); margin-bottom: 6px; }
+.stat-card .value { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.8rem; }
+.stat-card.accent .value { background: linear-gradient(135deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.recent-label { font-family: 'Syne', sans-serif; font-size: 0.85rem; font-weight: 700; color: var(--muted); margin-bottom: 0.75rem; letter-spacing: 0.05em; }
+.recent-item { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--border); }
+.recent-thumb { width: 44px; height: 58px; background: var(--surface2); border-radius: 8px; overflow: hidden; flex-shrink: 0; }
+.recent-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.recent-info { flex: 1; min-width: 0; }
+.recent-title { font-size: 0.85rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
+.recent-meta { font-size: 0.72rem; color: var(--muted); }
+.recent-platform { display: inline-block; background: var(--surface2); border-radius: 5px; padding: 1px 6px; font-size: 0.65rem; }
 
-  .video-actions { position: absolute; top: 10px; right: 10px; display: flex; flex-direction: column; gap: 6px; opacity: 0; transition: opacity 0.2s; }
-  .video-card:hover .video-actions { opacity: 1; }
-  .action-btn { width: 32px; height: 32px; background: rgba(0,0,0,0.65); backdrop-filter: blur(6px); border-radius: 8px; border: none; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; transition: background 0.2s; }
-  .action-btn:hover { background: rgba(255,45,92,0.7); }
-  .action-btn.del:hover { background: rgba(220,38,38,0.8); }
+/* ── BOTTOM SHEET (ADD) ── */
+.sheet-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.6); display: none; }
+.sheet-overlay.open { display: block; }
+.sheet {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%) translateY(100%);
+  width: 100%; max-width: 480px; z-index: 201;
+  background: var(--surface); border-radius: 24px 24px 0 0;
+  border-top: 1px solid var(--border);
+  transition: transform 0.32s cubic-bezier(0.32,0,0,1);
+  max-height: 92vh; overflow-y: auto;
+  padding-bottom: calc(var(--safe-bot) + 1.5rem);
+}
+.sheet.open { transform: translateX(-50%) translateY(0); }
+.sheet-handle { width: 36px; height: 4px; background: rgba(255,255,255,0.15); border-radius: 2px; margin: 12px auto 0; }
+.sheet-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.25rem 0.75rem; }
+.sheet-header h2 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.05rem; }
+.sheet-close { width: 32px; height: 32px; border-radius: 50%; background: var(--surface2); border: none; color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+.sheet-body { padding: 0 1.25rem; }
 
-  .card-info { padding: 10px 12px 12px; }
-  .card-title { font-family: 'Syne', sans-serif; font-weight: 600; font-size: 0.88rem; color: var(--text); line-height: 1.3; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .card-meta { display: flex; align-items: center; justify-content: space-between; font-size: 0.72rem; color: var(--muted); }
+.tab-row { display: flex; background: var(--surface2); border-radius: 10px; padding: 3px; margin-bottom: 1.25rem; }
+.tab-btn { flex: 1; padding: 8px; border: none; border-radius: 8px; background: transparent; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 0.82rem; cursor: pointer; transition: all 0.2s; }
+.tab-btn.active { background: var(--surface); color: var(--text); font-weight: 500; box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
 
-  /* MODAL */
-  .modal-overlay { position: fixed; inset: 0; z-index: 200; background: rgba(0,0,0,0.75); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; }
-  .modal-overlay.open { display: flex; }
-  .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; width: 100%; max-width: 500px; margin: 1rem; animation: popIn 0.2s ease; max-height: 90vh; overflow-y: auto; }
-  @keyframes popIn { from { opacity:0; transform: scale(0.93); } to { opacity:1; transform: scale(1); } }
-  .modal h2 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1.2rem; margin-bottom: 1.5rem; }
+.field { margin-bottom: 0.85rem; }
+.field label { display: block; font-size: 0.72rem; color: var(--muted); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.05em; }
+.field input, .field textarea {
+  width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
+  color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; padding: 10px 13px; outline: none; transition: border-color 0.2s; resize: none;
+}
+.field input:focus, .field textarea:focus { border-color: rgba(255,45,92,0.5); }
+.field textarea { height: 68px; }
 
-  /* TABS */
-  .tab-row { display: flex; gap: 0; margin-bottom: 1.5rem; border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-  .tab-btn { flex: 1; padding: 9px; background: transparent; border: none; color: var(--muted); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; cursor: pointer; transition: all 0.2s; }
-  .tab-btn.active { background: linear-gradient(135deg, rgba(255,45,92,0.25), rgba(124,58,237,0.25)); color: var(--text); font-weight: 500; }
-  .tab-btn:not(:last-child) { border-right: 1px solid var(--border); }
+.drop-zone { border: 1.5px dashed rgba(255,255,255,0.12); border-radius: 12px; padding: 1.5rem 1rem; text-align: center; cursor: pointer; position: relative; transition: all 0.2s; margin-bottom: 0.85rem; }
+.drop-zone:active, .drop-zone.drag-over { border-color: var(--accent); background: rgba(255,45,92,0.05); }
+.drop-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+.drop-icon { font-size: 1.75rem; margin-bottom: 6px; }
+.drop-label { font-size: 0.85rem; color: var(--muted); }
+.drop-label span { color: var(--accent); }
+.drop-info { font-size: 0.72rem; color: var(--muted); opacity: 0.6; margin-top: 3px; }
+.file-ok { font-size: 0.8rem; color: #10b981; margin-top: 6px; font-weight: 500; }
 
-  .tab-content { display: none; }
-  .tab-content.active { display: block; }
+.progress-wrap { display: none; margin-bottom: 0.85rem; }
+.progress-wrap.show { display: block; }
+.progress-bg { background: var(--surface2); border-radius: 6px; height: 5px; overflow: hidden; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); width: 0%; transition: width 0.2s; }
+.progress-txt { font-size: 0.72rem; color: var(--muted); margin-top: 4px; text-align: center; }
 
-  .field { margin-bottom: 1rem; }
-  .field label { display: block; font-size: 0.78rem; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.05em; }
-  .field input, .field textarea, .field select {
-    width: 100%; background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
-    color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 0.9rem; padding: 10px 14px; outline: none; transition: border-color 0.2s; resize: none;
-  }
-  .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--accent); }
-  .field textarea { height: 72px; }
-  .field select option { background: #1c1c26; }
+.link-status-row { position: relative; }
+.link-status-row input { padding-right: 40px; }
+.link-status-icon { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); font-size: 1rem; pointer-events: none; }
+.link-preview { background: var(--surface2); border: 1px solid var(--border); border-radius: 9px; padding: 8px 12px; margin-top: -4px; margin-bottom: 0.85rem; display: none; }
+.link-preview .plat { font-size: 0.7rem; color: var(--muted); margin-bottom: 2px; }
+.link-preview .purl { font-size: 0.82rem; font-weight: 500; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-  /* FILE DROP ZONE */
-  .drop-zone {
-    border: 2px dashed var(--border); border-radius: 12px; padding: 2rem 1rem;
-    text-align: center; cursor: pointer; transition: all 0.2s; position: relative;
-  }
-  .drop-zone:hover, .drop-zone.drag-over { border-color: var(--accent); background: rgba(255,45,92,0.05); }
-  .drop-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
-  .drop-icon { font-size: 2rem; margin-bottom: 0.5rem; }
-  .drop-label { font-size: 0.9rem; color: var(--muted); }
-  .drop-label span { color: var(--accent); }
-  .drop-info { font-size: 0.75rem; color: var(--muted); margin-top: 4px; opacity: 0.7; }
-  .file-selected { font-size: 0.82rem; color: #10b981; margin-top: 8px; font-weight: 500; }
+.btn-save { width: 100%; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; border: none; padding: 13px; border-radius: 12px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: opacity 0.2s; margin-top: 0.5rem; }
+.btn-save:active { opacity: 0.85; }
+.btn-save:disabled { opacity: 0.35; cursor: not-allowed; }
 
-  /* PROGRESS */
-  .progress-wrap { margin-top: 0.75rem; display: none; }
-  .progress-wrap.show { display: block; }
-  .progress-bar-bg { background: var(--surface2); border-radius: 6px; height: 6px; overflow: hidden; }
-  .progress-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 6px; transition: width 0.2s; width: 0%; }
-  .progress-text { font-size: 0.78rem; color: var(--muted); margin-top: 4px; text-align: center; }
+/* ── VIDEO VIEWER SHEET ── */
+.viewer-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.95); display: none; align-items: flex-end; justify-content: center; }
+.viewer-overlay.open { display: flex; }
+.viewer-sheet {
+  width: 100%; max-width: 480px;
+  background: var(--surface); border-radius: 24px 24px 0 0;
+  border-top: 1px solid var(--border);
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.32,0,0,1);
+  overflow: hidden;
+  padding-bottom: calc(var(--safe-bot) + 0.5rem);
+}
+.viewer-overlay.open .viewer-sheet { transform: translateY(0); }
+.viewer-video-wrap { background: #000; }
+.viewer-video-wrap video { width: 100%; max-height: 55vh; object-fit: contain; display: block; }
+.viewer-video-wrap iframe { width: 100%; height: 55vh; border: none; display: block; }
+.viewer-info { padding: 0.875rem 1.25rem; }
+.viewer-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.95rem; margin-bottom: 4px; line-height: 1.3; }
+.viewer-note { font-size: 0.82rem; color: var(--muted); margin-bottom: 10px; }
+.viewer-btns { display: flex; gap: 8px; }
+.viewer-btn { flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; padding: 10px; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-size: 0.82rem; font-weight: 500; cursor: pointer; border: none; transition: opacity 0.2s; }
+.viewer-btn:active { opacity: 0.8; }
+.viewer-btn.copy { background: var(--surface2); border: 1px solid var(--border); color: var(--text); }
+.viewer-btn.open { background: linear-gradient(135deg, rgba(255,45,92,0.2), rgba(124,58,237,0.2)); border: 1px solid rgba(255,45,92,0.35); color: var(--text); }
+.viewer-close { position: absolute; top: 12px; right: 12px; width: 34px; height: 34px; background: rgba(0,0,0,0.6); border: none; border-radius: 50%; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 5; }
 
-  .modal-actions { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
-  .btn-cancel { flex: 1; background: var(--surface2); color: var(--muted); border: 1px solid var(--border); padding: 10px; border-radius: 10px; font-family: 'DM Sans', sans-serif; cursor: pointer; font-size: 0.9rem; transition: background 0.2s; }
-  .btn-cancel:hover { background: #252535; }
-  .btn-save { flex: 2; background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff; border: none; padding: 10px; border-radius: 10px; font-family: 'DM Sans', sans-serif; font-weight: 600; cursor: pointer; font-size: 0.9rem; transition: opacity 0.2s; }
-  .btn-save:hover { opacity: 0.9; }
-  .btn-save:disabled { opacity: 0.4; cursor: not-allowed; }
+/* ── TOAST ── */
+.toast { position: fixed; bottom: calc(var(--nav-h) + var(--safe-bot) + 12px); left: 50%; transform: translateX(-50%) translateY(20px); background: rgba(30,30,40,0.97); border: 1px solid var(--border); border-radius: 20px; padding: 9px 18px; font-size: 0.82rem; color: var(--text); z-index: 999; opacity: 0; transition: opacity 0.2s, transform 0.2s; white-space: nowrap; pointer-events: none; }
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
-  /* VIDEO VIEWER MODAL */
-  .view-overlay { position: fixed; inset: 0; z-index: 300; background: rgba(0,0,0,0.93); display: none; align-items: center; justify-content: center; padding: 1rem; }
-  .view-overlay.open { display: flex; }
-  .view-modal { position: relative; background: var(--surface); border-radius: 20px; overflow: hidden; max-width: 420px; width: 100%; border: 1px solid var(--border); animation: popIn 0.2s ease; }
-  .view-modal video, .view-modal iframe { width: 100%; display: block; background: #000; }
-  .view-modal video { max-height: 72vh; object-fit: contain; }
-  .view-modal iframe { height: 72vh; border: none; }
-  .view-info { padding: 1rem 1.25rem 1.25rem; }
-  .view-info h3 { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem; margin-bottom: 6px; }
-  .view-info p { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
-  .vm-close { position: absolute; top: 12px; right: 12px; width: 36px; height: 36px; background: rgba(0,0,0,0.7); border: none; border-radius: 50%; color: #fff; cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; z-index: 10; }
-
-  .toast { position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(100px); background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 10px 20px; font-size: 0.875rem; color: var(--text); z-index: 500; transition: transform 0.3s ease; white-space: nowrap; }
-  .toast.show { transform: translateX(-50%) translateY(0); }
-  .toast.success { border-color: rgba(16,185,129,0.5); }
-  .toast.error { border-color: rgba(255,45,92,0.5); }
-
-  @media (max-width: 600px) {
-    nav { padding: 0 1rem; }
-    main { padding: 1rem 1rem 4rem; }
-    .filters, .stats-bar { padding: 0.75rem 1rem; }
-    .video-grid { grid-template-columns: repeat(2, 1fr); gap: 0.75rem; }
-    .search-wrap { display: none; }
-  }
+/* ── TAB CONTENT ── */
+.tab-content { display: none; }
+.tab-content.active { display: block; }
 </style>
 </head>
 <body>
+<div id="app">
 
-<nav>
-  <div class="logo">▶ VideoVault</div>
-  <div class="nav-right">
-    <span class="nav-count" id="nav-count">0 video</span>
-    <button class="add-btn" onclick="openAddModal()">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-      Thêm video
-    </button>
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="topbar-logo">▶ VideoVault</div>
+    <div class="topbar-right">
+      <span class="count-badge" id="nav-count">0 video</span>
+      <div class="icon-btn" onclick="openSearch()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+      </div>
+    </div>
   </div>
-</nav>
 
-<div class="stats-bar">
-  <div class="stat-item">Tổng: <strong id="total-count">0</strong></div>
-  <div class="stat-item">Upload: <strong id="upload-count">0</strong></div>
-  <div class="stat-item">Link: <strong id="link-count">0</strong></div>
+  <!-- PAGES -->
+  <div class="pages">
+
+    <!-- HOME PAGE -->
+    <div class="page active" id="page-home">
+      <div class="page-content">
+        <div id="search-bar-wrap" style="display:none;">
+          <div class="search-bar" style="margin-bottom:0.75rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+            <input type="text" id="search-input" placeholder="Tìm tiêu đề, link..." oninput="searchVideos(this.value)" />
+          </div>
+        </div>
+        <div class="filter-row">
+          <div class="filter-pill active" onclick="setFilter('all',this)">Tất cả</div>
+          <div class="filter-pill" onclick="setFilter('upload',this)">📤 Upload</div>
+          <div class="filter-pill" onclick="setFilter('tiktok',this)">TikTok</div>
+          <div class="filter-pill" onclick="setFilter('youtube',this)">YouTube</div>
+          <div class="filter-pill" onclick="setFilter('facebook',this)">Facebook</div>
+          <div class="filter-pill" onclick="setFilter('instagram',this)">Instagram</div>
+        </div>
+        <div class="loading-wrap" id="loading"><span class="spinner"></span>Đang tải...</div>
+        <div class="empty-state" id="empty" style="display:none;">
+          <div class="empty-icon">📭</div>
+          <h3>Chưa có video</h3>
+          <p>Nhấn + để thêm video đầu tiên</p>
+        </div>
+        <div class="video-grid" id="video-grid"></div>
+      </div>
+    </div>
+
+    <!-- STATS PAGE -->
+    <div class="page" id="page-stats">
+      <div class="page-content">
+        <div class="stat-cards">
+          <div class="stat-card accent">
+            <div class="label">TỔNG VIDEO</div>
+            <div class="value" id="st-total">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">ĐÃ UPLOAD</div>
+            <div class="value" id="st-upload">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">TIKTOK</div>
+            <div class="value" id="st-tiktok">0</div>
+          </div>
+          <div class="stat-card">
+            <div class="label">YOUTUBE</div>
+            <div class="value" id="st-yt">0</div>
+          </div>
+        </div>
+        <div class="recent-label">GẦN ĐÂY</div>
+        <div id="recent-list"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <div class="nav-item active" id="nav-home" onclick="goPage('home')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Trang chủ</span>
+    </div>
+    <div class="nav-add" onclick="openAddSheet()">
+      <div class="nav-add-btn">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      </div>
+    </div>
+    <div class="nav-item" id="nav-stats" onclick="goPage('stats')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span>Thống kê</span>
+    </div>
+  </div>
 </div>
 
-<div class="filters">
-  <div class="filter-chip active" onclick="setFilter('all',this)">🎬 Tất cả</div>
-  <div class="filter-chip" onclick="setFilter('upload',this)">📤 Đã upload</div>
-  <div class="filter-chip" onclick="setFilter('tiktok',this)">📱 TikTok</div>
-  <div class="filter-chip" onclick="setFilter('youtube',this)">▶ YouTube</div>
-  <div class="filter-chip" onclick="setFilter('facebook',this)">👥 Facebook</div>
-  <div class="filter-chip" onclick="setFilter('other',this)">🌐 Khác</div>
-  <div class="search-wrap">
-    <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
-    <input type="text" placeholder="Tìm kiếm..." oninput="searchVideos(this.value)" />
+<!-- ADD BOTTOM SHEET -->
+<div class="sheet-overlay" id="add-overlay" onclick="closeAddSheet()"></div>
+<div class="sheet" id="add-sheet">
+  <div class="sheet-handle"></div>
+  <div class="sheet-header">
+    <h2>🎬 Thêm video</h2>
+    <button class="sheet-close" onclick="closeAddSheet()">✕</button>
   </div>
-</div>
-
-<main>
-  <div class="loading-state" id="loading"><span class="spinner"></span>Đang tải từ Firebase...</div>
-  <div class="empty-state" id="empty">
-    <div class="empty-icon">📭</div>
-    <h3>Chưa có video nào</h3>
-    <p>Nhấn "Thêm video" để upload hoặc lưu link</p>
-  </div>
-  <div class="video-grid" id="video-grid"></div>
-</main>
-
-<!-- ADD MODAL -->
-<div class="modal-overlay" id="add-modal" onclick="handleModalClick(event,'add-modal')">
-  <div class="modal">
-    <h2>🎬 Thêm video mới</h2>
+  <div class="sheet-body">
     <div class="tab-row">
       <button class="tab-btn active" onclick="switchTab('upload',this)">📤 Upload file</button>
       <button class="tab-btn" onclick="switchTab('link',this)">🔗 Lưu link</button>
     </div>
 
-    <!-- UPLOAD TAB -->
+    <!-- UPLOAD -->
     <div class="tab-content active" id="tab-upload">
       <div class="drop-zone" id="drop-zone">
         <input type="file" id="file-input" accept="video/*" onchange="onFileSelected(this)" />
         <div class="drop-icon">🎥</div>
-        <div class="drop-label">Kéo thả hoặc <span>chọn file video</span></div>
-        <div class="drop-info">MP4, MOV, AVI, WEBM — tối đa 500MB</div>
-        <div class="file-selected" id="file-name"></div>
+        <div class="drop-label">Chạm để <span>chọn video</span></div>
+        <div class="drop-info">MP4, MOV, WEBM — tối đa 500MB</div>
+        <div class="file-ok" id="file-name"></div>
       </div>
       <div class="progress-wrap" id="progress-wrap">
-        <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill"></div></div>
-        <div class="progress-text" id="progress-text">0%</div>
+        <div class="progress-bg"><div class="progress-fill" id="progress-fill"></div></div>
+        <div class="progress-txt" id="progress-txt">0%</div>
       </div>
-      <div class="field" style="margin-top:1rem">
+      <div class="field">
         <label>Tiêu đề</label>
         <input type="text" id="upload-title" placeholder="Tên video..." />
       </div>
       <div class="field">
         <label>Ghi chú</label>
-        <textarea id="upload-note" placeholder="Mô tả, hashtag..."></textarea>
+        <textarea id="upload-note" placeholder="Mô tả..."></textarea>
       </div>
     </div>
 
-    <!-- LINK TAB -->
+    <!-- LINK -->
     <div class="tab-content" id="tab-link">
       <div class="field">
-        <label>Link video *</label>
-        <input type="url" id="link-url" placeholder="https://www.tiktok.com/..." oninput="detectPlatform(this.value)" />
+        <label>Dán link — tự nhận dạng &amp; lưu</label>
+        <div class="link-status-row">
+          <input type="url" id="link-url" placeholder="https://www.tiktok.com/..." oninput="onLinkInput(this.value)" />
+          <div class="link-status-icon" id="link-status"></div>
+        </div>
+      </div>
+      <div class="link-preview" id="link-preview">
+        <div class="plat" id="link-plat-label"></div>
+        <div class="purl" id="link-url-label"></div>
       </div>
       <div class="field">
-        <label>Tiêu đề</label>
-        <input type="text" id="link-title" placeholder="Tên video..." />
+        <label>Tiêu đề <span style="color:var(--muted);font-size:0.7rem;">(tùy chọn)</span></label>
+        <input type="text" id="link-title" placeholder="Để trống = tự lấy từ link..." />
       </div>
       <div class="field">
         <label>Ghi chú</label>
         <textarea id="link-note" placeholder="Mô tả, hashtag..."></textarea>
       </div>
-      <div class="field">
-        <label>Nền tảng</label>
-        <input type="text" id="link-platform" placeholder="TikTok / YouTube / Facebook..." />
-      </div>
     </div>
 
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeModal('add-modal')">Hủy</button>
-      <button class="btn-save" id="save-btn" onclick="saveVideo()">
-        <span id="save-text">💾 Lưu</span>
-      </button>
-    </div>
+    <button class="btn-save" id="save-btn" onclick="saveVideo()">
+      <span id="save-text">💾 Lưu</span>
+    </button>
   </div>
 </div>
 
-<!-- VIEW MODAL -->
-<div class="view-overlay" id="view-modal" onclick="handleModalClick(event,'view-modal')">
-  <div class="view-modal" id="view-modal-inner">
-    <button class="vm-close" onclick="closeViewModal()">✕</button>
-    <div id="view-player"></div>
-    <div class="view-info">
-      <h3 id="view-title"></h3>
-      <p id="view-note"></p>
-      <p style="margin-top:8px"><a id="view-link" href="#" target="_blank" style="color:var(--accent);font-size:0.8rem;text-decoration:none;">🔗 Mở link gốc →</a></p>
+<!-- VIDEO VIEWER -->
+<div class="viewer-overlay" id="viewer-overlay" onclick="handleViewerClick(event)">
+  <div class="viewer-sheet" id="viewer-sheet">
+    <button class="viewer-close" onclick="closeViewer()">✕</button>
+    <div class="viewer-video-wrap" id="viewer-player"></div>
+    <div class="viewer-info">
+      <div class="viewer-title" id="viewer-title"></div>
+      <div class="viewer-note" id="viewer-note"></div>
+      <div class="viewer-btns">
+        <button class="viewer-btn copy" onclick="copyDirectLink()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+          Copy link
+        </button>
+        <button class="viewer-btn open" id="viewer-open-btn" onclick="openDirectLink()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+          Mở link gốc
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -313,14 +428,13 @@ let currentFilter = 'all';
 let searchQuery = '';
 let activeTab = 'upload';
 let selectedFile = null;
+let currentViewUrl = '';
 
 // ——— LOAD ———
 onValue(videosRef, snap => {
   allVideos = [];
-  if (snap.exists()) {
-    snap.forEach(c => allVideos.push({ id: c.key, ...c.val() }));
-    allVideos.reverse();
-  }
+  if (snap.exists()) snap.forEach(c => allVideos.push({ id: c.key, ...c.val() }));
+  allVideos.reverse();
   document.getElementById('loading').style.display = 'none';
   renderVideos();
   updateStats();
@@ -330,51 +444,46 @@ onValue(videosRef, snap => {
 window.renderVideos = function() {
   const grid = document.getElementById('video-grid');
   let list = allVideos;
-  if (currentFilter === 'upload') {
-    list = list.filter(v => v.type === 'upload');
-  } else if (currentFilter !== 'all') {
-    list = list.filter(v => (v.platform || '').toLowerCase().includes(currentFilter));
-  }
+  if (currentFilter === 'upload') list = list.filter(v => v.type === 'upload');
+  else if (currentFilter !== 'all') list = list.filter(v => (v.platform||'').toLowerCase().includes(currentFilter));
   if (searchQuery) {
     const q = searchQuery.toLowerCase();
-    list = list.filter(v => (v.title||'').toLowerCase().includes(q) || (v.url||'').toLowerCase().includes(q) || (v.note||'').toLowerCase().includes(q));
+    list = list.filter(v => (v.title||'').toLowerCase().includes(q) || (v.url||'').toLowerCase().includes(q));
   }
   const empty = document.getElementById('empty');
-  if (!list.length) { grid.innerHTML = ''; empty.classList.add('show'); return; }
-  empty.classList.remove('show');
+  if (!list.length) { grid.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
   grid.innerHTML = list.map((v,i) => buildCard(v,i)).join('');
 }
 
 function buildCard(v, i) {
-  const title = esc(v.title || shortenUrl(v.url || ''));
-  const platform = esc(v.platform || (v.type==='upload' ? 'Upload' : 'Video'));
-  const date = v.createdAt ? new Date(v.createdAt).toLocaleDateString('vi-VN') : '';
-  const thumb = v.thumbnail || getYtThumb(v.url || '');
-  const isUpload = v.type === 'upload';
+  const title = esc(v.title || shortenUrl(v.url||''));
+  const platform = esc(v.platform || (v.type==='upload'?'Upload':'Video'));
+  const thumb = v.thumbnail || getYtThumb(v.url||'');
+  const url = esc(v.url||'');
+  const sid = esc(v.id);
+  const sp = esc(v.storagePath||'');
 
-  return `<div class="video-card" style="animation-delay:${i*35}ms" onclick="openVideo('${esc(v.id)}')">
+  return `<div class="video-card" style="animation-delay:${i*30}ms" onclick="openVideo('${sid}')">
     <div class="video-thumb">
-      ${thumb
-        ? `<img src="${thumb}" loading="lazy" onerror="this.style.display='none'">`
-        : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,0.12);font-size:2.5rem;">▶</div>`}
+      ${thumb ? `<img src="${thumb}" loading="lazy" onerror="this.parentNode.innerHTML='<div class=thumb-placeholder>▶</div>'">` : `<div class="thumb-placeholder">▶</div>`}
       <div class="thumb-overlay"></div>
-      <div class="play-btn">▶</div>
-      <div class="video-platform">${platform}</div>
-      ${isUpload ? `<div class="video-type-badge">📤 file</div>` : ''}
-      <div class="video-actions">
-        <button class="action-btn" title="Mở link" onclick="event.stopPropagation();window.open('${esc(v.url||v.storageUrl||'')}','_blank')">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-        </button>
-        <button class="action-btn del" title="Xóa" onclick="event.stopPropagation();deleteVideo('${v.id}','${esc(v.storagePath||'')}')">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg>
-        </button>
-      </div>
-    </div>
-    <div class="card-info">
-      <div class="card-title" title="${title}">${title}</div>
-      <div class="card-meta">
-        <span>${esc((v.note||'').substring(0,28))}</span>
-        <span>${date}</span>
+      <div class="card-platform">${platform}</div>
+      <div class="card-bottom">
+        <div class="card-title-overlay">${title}</div>
+        <div class="card-actions-row">
+          <button class="card-act-btn" onclick="event.stopPropagation();copyLink('${url}')">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 007.54.54l3-3a5 5 0 00-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 00-7.54-.54l-3 3a5 5 0 007.07 7.07l1.71-1.71"/></svg>
+            Copy
+          </button>
+          <button class="card-act-btn" onclick="event.stopPropagation();openLink('${url}')">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            Mở
+          </button>
+          <button class="card-act-btn" style="flex:0.6;" onclick="event.stopPropagation();deleteVideo('${sid}','${sp}')">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/></svg>
+          </button>
+        </div>
       </div>
     </div>
   </div>`;
@@ -382,12 +491,65 @@ function buildCard(v, i) {
 
 function updateStats() {
   const total = allVideos.length;
-  const uploads = allVideos.filter(v => v.type === 'upload').length;
-  document.getElementById('total-count').textContent = total;
-  document.getElementById('upload-count').textContent = uploads;
-  document.getElementById('link-count').textContent = total - uploads;
+  const uploads = allVideos.filter(v => v.type==='upload').length;
+  const tt = allVideos.filter(v => (v.platform||'').toLowerCase().includes('tiktok')).length;
+  const yt = allVideos.filter(v => (v.platform||'').toLowerCase().includes('youtube')).length;
   document.getElementById('nav-count').textContent = total + ' video';
+  document.getElementById('st-total').textContent = total;
+  document.getElementById('st-upload').textContent = uploads;
+  document.getElementById('st-tiktok').textContent = tt;
+  document.getElementById('st-yt').textContent = yt;
+  // recent
+  const rec = document.getElementById('recent-list');
+  rec.innerHTML = allVideos.slice(0,8).map(v => {
+    const thumb = v.thumbnail || getYtThumb(v.url||'');
+    const date = v.createdAt ? new Date(v.createdAt).toLocaleDateString('vi-VN') : '';
+    return `<div class="recent-item" onclick="openVideo('${esc(v.id)}')">
+      <div class="recent-thumb">${thumb ? `<img src="${thumb}" style="width:100%;height:100%;object-fit:cover;">` : ''}</div>
+      <div class="recent-info">
+        <div class="recent-title">${esc(v.title||shortenUrl(v.url||''))}</div>
+        <div class="recent-meta"><span class="recent-platform">${esc(v.platform||'Video')}</span>  ${date}</div>
+      </div>
+    </div>`;
+  }).join('');
 }
+
+// ——— OPEN VIDEO ———
+window.openVideo = function(id) {
+  const v = allVideos.find(x => x.id === id);
+  if (!v) return;
+  currentViewUrl = v.url || '';
+  const embed = getEmbedUrl(currentViewUrl);
+  const player = document.getElementById('viewer-player');
+  if (embed) {
+    player.innerHTML = `<iframe src="${embed}" allowfullscreen allow="autoplay"></iframe>`;
+  } else {
+    player.innerHTML = `<video src="${currentViewUrl}" controls autoplay playsinline style="width:100%;max-height:55vh;object-fit:contain;display:block;background:#000;"></video>`;
+  }
+  document.getElementById('viewer-title').textContent = v.title || shortenUrl(currentViewUrl);
+  document.getElementById('viewer-note').textContent = v.note || '';
+  document.getElementById('viewer-overlay').classList.add('open');
+}
+
+window.closeViewer = function() {
+  document.getElementById('viewer-player').innerHTML = '';
+  document.getElementById('viewer-overlay').classList.remove('open');
+}
+window.handleViewerClick = function(e) {
+  if (e.target === document.getElementById('viewer-overlay')) closeViewer();
+}
+window.copyDirectLink = function() { copyLink(currentViewUrl); }
+window.openDirectLink = function() { openLink(currentViewUrl); }
+
+window.copyLink = function(url) {
+  if (!url) { toast('Không có link', 'error'); return; }
+  navigator.clipboard.writeText(url).then(() => toast('✅ Đã copy link!')).catch(() => {
+    const ta = document.createElement('textarea'); ta.value = url;
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+    toast('✅ Đã copy link!');
+  });
+}
+window.openLink = function(url) { if (url) window.open(url, '_blank'); }
 
 // ——— SAVE ———
 window.saveVideo = async function() {
@@ -395,144 +557,111 @@ window.saveVideo = async function() {
   btn.disabled = true;
 
   if (activeTab === 'upload') {
-    if (!selectedFile) { toast('Vui lòng chọn file video', 'error'); btn.disabled = false; return; }
-    const title = document.getElementById('upload-title').value.trim() || selectedFile.name.replace(/\.[^.]+$/, '');
+    if (!selectedFile) { toast('Chọn file video trước', 'error'); btn.disabled = false; return; }
+    const title = document.getElementById('upload-title').value.trim() || selectedFile.name.replace(/\.[^.]+$/,'');
     const note = document.getElementById('upload-note').value.trim();
     const storagePath = `videos/${Date.now()}_${selectedFile.name}`;
-    const storageRef = stRef(storage, storagePath);
-    const task = uploadBytesResumable(storageRef, selectedFile);
+    const task = uploadBytesResumable(stRef(storage, storagePath), selectedFile);
     document.getElementById('save-text').textContent = 'Đang upload...';
     document.getElementById('progress-wrap').classList.add('show');
-
     task.on('state_changed',
-      snap => {
-        const pct = Math.round(snap.bytesTransferred / snap.totalBytes * 100);
-        document.getElementById('progress-fill').style.width = pct + '%';
-        document.getElementById('progress-text').textContent = pct + '%';
+      s => {
+        const p = Math.round(s.bytesTransferred/s.totalBytes*100);
+        document.getElementById('progress-fill').style.width = p+'%';
+        document.getElementById('progress-txt').textContent = p+'%';
       },
-      err => {
-        toast('❌ Upload lỗi: ' + err.message, 'error');
-        btn.disabled = false;
-        document.getElementById('save-text').textContent = '💾 Lưu';
-      },
+      err => { toast('❌ ' + err.message, 'error'); btn.disabled=false; document.getElementById('save-text').textContent='💾 Lưu'; },
       async () => {
         const url = await getDownloadURL(task.snapshot.ref);
-        await push(videosRef, { type: 'upload', title, note, platform: 'Upload', url, storagePath, createdAt: Date.now() });
-        toast('✅ Upload thành công!', 'success');
-        closeModal('add-modal');
-        resetForm();
-        btn.disabled = false;
-        document.getElementById('save-text').textContent = '💾 Lưu';
+        await push(videosRef, { type:'upload', title, note, platform:'Upload', url, storagePath, createdAt: Date.now() });
+        toast('✅ Upload thành công!');
+        closeAddSheet(); resetForm(); btn.disabled=false; document.getElementById('save-text').textContent='💾 Lưu';
       }
     );
   } else {
     const url = document.getElementById('link-url').value.trim();
-    if (!url) { toast('Vui lòng nhập link', 'error'); btn.disabled = false; return; }
-    try { new URL(url); } catch { toast('Link không hợp lệ', 'error'); btn.disabled = false; return; }
+    if (!url) { toast('Nhập link trước', 'error'); btn.disabled=false; return; }
+    try { new URL(url); } catch { toast('Link không hợp lệ', 'error'); btn.disabled=false; return; }
     const title = document.getElementById('link-title').value.trim() || shortenUrl(url);
     const note = document.getElementById('link-note').value.trim();
-    const platform = document.getElementById('link-platform').value.trim() || detectPlatformName(url);
+    const platform = detectPlatformName(url);
     document.getElementById('save-text').textContent = 'Đang lưu...';
     try {
-      await push(videosRef, { type: 'link', title, note, platform, url, createdAt: Date.now() });
-      toast('✅ Đã lưu link!', 'success');
-      closeModal('add-modal');
-      resetForm();
-    } catch(e) { toast('❌ Lỗi: ' + e.message, 'error'); }
-    btn.disabled = false;
-    document.getElementById('save-text').textContent = '💾 Lưu';
+      await push(videosRef, { type:'link', title, note, platform, url, createdAt: Date.now() });
+      toast('✅ Đã lưu link!');
+      closeAddSheet(); resetForm();
+    } catch(e) { toast('❌ '+e.message, 'error'); }
+    btn.disabled=false; document.getElementById('save-text').textContent='💾 Lưu';
   }
 }
 
 // ——— DELETE ———
-window.deleteVideo = async function(id, storagePath) {
+window.deleteVideo = async function(id, sp) {
   if (!confirm('Xóa video này?')) return;
   try {
-    await remove(dbRef(db, 'videos/' + id));
-    if (storagePath) {
-      try { await deleteObject(stRef(storage, storagePath)); } catch {}
-    }
-    toast('🗑 Đã xóa', 'success');
-  } catch(e) { toast('Lỗi: ' + e.message, 'error'); }
-}
-
-// ——— OPEN VIDEO ———
-window.openVideo = function(id) {
-  const v = allVideos.find(x => x.id === id);
-  if (!v) return;
-  const player = document.getElementById('view-player');
-  const videoUrl = v.url || v.storageUrl || '';
-  const embed = getEmbedUrl(videoUrl);
-
-  if (embed) {
-    player.innerHTML = `<iframe src="${embed}" allowfullscreen allow="autoplay"></iframe>`;
-  } else {
-    player.innerHTML = `<video src="${videoUrl}" controls autoplay style="max-height:72vh;object-fit:contain;width:100%;background:#000;display:block;"></video>`;
-  }
-
-  document.getElementById('view-title').textContent = v.title || '';
-  document.getElementById('view-note').textContent = v.note || '';
-  document.getElementById('view-link').href = videoUrl;
-  document.getElementById('view-link').style.display = videoUrl ? 'inline' : 'none';
-  document.getElementById('view-modal').classList.add('open');
-}
-
-window.closeViewModal = function() {
-  document.getElementById('view-player').innerHTML = '';
-  document.getElementById('view-modal').classList.remove('open');
+    await remove(dbRef(db, 'videos/'+id));
+    if (sp) try { await deleteObject(stRef(storage, sp)); } catch {}
+    toast('🗑 Đã xóa');
+  } catch(e) { toast('Lỗi: '+e.message, 'error'); }
 }
 
 // ——— HELPERS ———
 function getEmbedUrl(url) {
   if (!url) return null;
-  if (url.includes('youtube.com/watch')) {
-    try { const v = new URL(url).searchParams.get('v'); return v ? `https://www.youtube.com/embed/${v}?autoplay=1` : null; } catch { return null; }
-  }
-  if (url.includes('youtu.be/')) {
-    const v = url.split('youtu.be/')[1]?.split('?')[0];
-    return v ? `https://www.youtube.com/embed/${v}?autoplay=1` : null;
-  }
+  if (url.includes('youtube.com/watch')) { try { const v=new URL(url).searchParams.get('v'); return v?`https://www.youtube.com/embed/${v}?autoplay=1`:null; } catch { return null; } }
+  if (url.includes('youtu.be/')) { const v=url.split('youtu.be/')[1]?.split('?')[0]; return v?`https://www.youtube.com/embed/${v}?autoplay=1`:null; }
   return null;
 }
 function getYtThumb(url) {
   if (!url) return null;
-  if (url.includes('youtube.com/watch')) { try { const v = new URL(url).searchParams.get('v'); return v ? `https://img.youtube.com/vi/${v}/hqdefault.jpg` : null; } catch { return null; } }
-  if (url.includes('youtu.be/')) { const v = url.split('youtu.be/')[1]?.split('?')[0]; return v ? `https://img.youtube.com/vi/${v}/hqdefault.jpg` : null; }
+  if (url.includes('youtube.com/watch')) { try { const v=new URL(url).searchParams.get('v'); return v?`https://img.youtube.com/vi/${v}/hqdefault.jpg`:null; } catch { return null; } }
+  if (url.includes('youtu.be/')) { const v=url.split('youtu.be/')[1]?.split('?')[0]; return v?`https://img.youtube.com/vi/${v}/hqdefault.jpg`:null; }
   return null;
 }
 function detectPlatformName(url) {
   if (!url) return 'Video';
   if (url.includes('tiktok.com')) return 'TikTok';
-  if (url.includes('youtube.com') || url.includes('youtu.be')) return 'YouTube';
-  if (url.includes('facebook.com') || url.includes('fb.com')) return 'Facebook';
+  if (url.includes('youtube.com')||url.includes('youtu.be')) return 'YouTube';
+  if (url.includes('facebook.com')||url.includes('fb.com')) return 'Facebook';
   if (url.includes('instagram.com')) return 'Instagram';
-  if (url.includes('twitter.com') || url.includes('x.com')) return 'Twitter/X';
+  if (url.includes('twitter.com')||url.includes('x.com')) return 'Twitter/X';
   return 'Video';
 }
-window.detectPlatform = function(url) {
-  document.getElementById('link-platform').value = detectPlatformName(url);
-}
 function shortenUrl(url) {
-  try { const u = new URL(url); return u.hostname.replace('www.','') + u.pathname.substring(0,25); } catch { return url.substring(0,40); }
+  try { const u=new URL(url); return u.hostname.replace('www.','')+u.pathname.substring(0,20); } catch { return url.substring(0,35); }
 }
 function esc(s) {
   if (!s) return '';
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 
+// ——— LINK INPUT ———
+let linkTimer = null;
+window.onLinkInput = function(url) {
+  clearTimeout(linkTimer);
+  const status = document.getElementById('link-status');
+  const preview = document.getElementById('link-preview');
+  if (!url.trim()) { status.textContent=''; preview.style.display='none'; return; }
+  status.textContent='⏳';
+  linkTimer = setTimeout(() => {
+    try { new URL(url); status.textContent='✅'; } catch { status.textContent='❌'; return; }
+    document.getElementById('link-plat-label').textContent = detectPlatformName(url);
+    document.getElementById('link-url-label').textContent = shortenUrl(url);
+    preview.style.display = 'block';
+  }, 350);
+}
+
 // ——— FILE SELECT ———
 window.onFileSelected = function(input) {
   const file = input.files[0];
   if (!file) return;
-  if (file.size > 500 * 1024 * 1024) { toast('File quá lớn (tối đa 500MB)', 'error'); return; }
+  if (file.size > 500*1024*1024) { toast('File quá lớn (tối đa 500MB)', 'error'); return; }
   selectedFile = file;
-  document.getElementById('file-name').textContent = '✅ ' + file.name + ' (' + (file.size/1024/1024).toFixed(1) + ' MB)';
-  if (!document.getElementById('upload-title').value) {
-    document.getElementById('upload-title').value = file.name.replace(/\.[^.]+$/, '');
-  }
+  document.getElementById('file-name').textContent = '✅ '+file.name+' ('+( file.size/1024/1024).toFixed(1)+' MB)';
+  if (!document.getElementById('upload-title').value)
+    document.getElementById('upload-title').value = file.name.replace(/\.[^.]+$/,'');
 }
 
-// Drag & drop
 const dz = document.getElementById('drop-zone');
 dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
 dz.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
@@ -551,23 +680,39 @@ window.switchTab = function(tab, el) {
   activeTab = tab;
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   el.classList.add('active');
-  document.getElementById('tab-upload').classList.toggle('active', tab === 'upload');
-  document.getElementById('tab-link').classList.toggle('active', tab === 'link');
+  document.getElementById('tab-upload').classList.toggle('active', tab==='upload');
+  document.getElementById('tab-link').classList.toggle('active', tab==='link');
 }
 
-// ——— MODAL / FILTER / SEARCH ———
-window.openAddModal = function() {
-  document.getElementById('add-modal').classList.add('open');
+// ——— SHEET / NAV ———
+window.openAddSheet = function() {
+  document.getElementById('add-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('add-sheet').classList.add('open'), 10);
 }
-window.closeModal = function(id) {
-  document.getElementById(id).classList.remove('open');
+window.closeAddSheet = function() {
+  document.getElementById('add-sheet').classList.remove('open');
+  document.getElementById('add-overlay').classList.remove('open');
 }
-window.handleModalClick = function(e, id) {
-  if (e.target === document.getElementById(id)) {
-    if (id === 'view-modal') closeViewModal();
-    else closeModal(id);
-  }
+window.goPage = function(page) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-'+page).classList.add('active');
+  document.getElementById('nav-'+page)?.classList.add('active');
 }
+window.openSearch = function() {
+  const w = document.getElementById('search-bar-wrap');
+  const isOpen = w.style.display !== 'none';
+  w.style.display = isOpen ? 'none' : 'block';
+  if (!isOpen) document.getElementById('search-input').focus();
+}
+window.searchVideos = function(q) { searchQuery = q; renderVideos(); }
+window.setFilter = function(f, el) {
+  currentFilter = f;
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  el.classList.add('active');
+  renderVideos();
+}
+
 function resetForm() {
   selectedFile = null;
   document.getElementById('file-name').textContent = '';
@@ -577,27 +722,21 @@ function resetForm() {
   document.getElementById('link-url').value = '';
   document.getElementById('link-title').value = '';
   document.getElementById('link-note').value = '';
-  document.getElementById('link-platform').value = '';
+  document.getElementById('link-status').textContent = '';
+  document.getElementById('link-preview').style.display = 'none';
   document.getElementById('progress-wrap').classList.remove('show');
   document.getElementById('progress-fill').style.width = '0%';
 }
-window.setFilter = function(f, el) {
-  currentFilter = f;
-  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
-  el.classList.add('active');
-  renderVideos();
-}
-window.searchVideos = function(q) { searchQuery = q; renderVideos(); }
 
 function toast(msg, type='') {
   const t = document.getElementById('toast');
-  t.textContent = msg; t.className = 'toast show ' + type;
-  setTimeout(() => t.className = 'toast', 3000);
+  t.textContent = msg; t.className = 'toast show';
+  setTimeout(() => t.className = 'toast', 2800);
 }
 window.toast = toast;
 
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeModal('add-modal'); closeViewModal(); }
+  if (e.key === 'Escape') { closeAddSheet(); closeViewer(); }
 });
 </script>
 </body>
